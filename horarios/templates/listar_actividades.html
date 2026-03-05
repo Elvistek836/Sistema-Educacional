@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividades</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% load static %}
+
+
+    <link rel="icon" href="{% static "/imagenes/logo.PNG"%}"/>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+    
+    <style>
+        body {
+            background: #ffffff;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            z-index: 1000;
+            overflow-x: hidden;
+        }
+        
+        .navbar-modern {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1100;
+        }
+        
+        .navbar-brand-modern {
+            font-weight: 600;
+				font-size: 1.4rem;
+				text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+				transition: all 0.3s ease;
+			}
+
+			.navbar-brand-modern:hover {
+				transform: scale(1.05);
+        }
+        
+        .nav-link-modern {
+            color: white !important;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 12px 20px !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin: 0 2px;
+            border-left: none !important;
+            position: relative;
+        }
+        
+        .nav-link-modern:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: white !important;
+        }
+        
+        .nav-link-modern:active {
+            transform: translateY(0);
+        }
+        
+        .logo-container {
+            transition: all 0.3s ease;
+        }
+        
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+        
+        .banner-container {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            margin: 30px auto;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 90%;
+        }
+        
+        .banner-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .banner-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .navbar-toggler {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+        }
+        
+        .user-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px 12px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (max-width: 991px) {
+            .navbar-nav {
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                padding: 10px;
+                margin-top: 10px;
+            }
+            
+            .user-info {
+                margin: 10px 0;
+                text-align: center;
+                font-size: 0.8rem;
+            }
+        }
+        .navbar-modern {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1100;
+        }
+
+        .navbar-brand-modern {
+            font-weight: 600;
+				font-size: 1.4rem;
+				text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+				transition: all 0.3s ease;
+			}
+
+		.navbar-brand-modern:hover {
+				transform: scale(1.05);
+        }
+
+        .nav-link-modern {
+            color: white !important;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 12px 16px !important;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin: 0 2px;
+            border-left: none !important;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .nav-link-modern:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: white !important;
+        }
+
+        .nav-link-modern:active {
+            transform: translateY(0);
+        }
+
+        .offcanvas .offcanvas-body.navbar-nav {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            gap: 8px;
+            height: calc(100vh - 140px);
+            align-content: flex-start;
+        }
+
+        .offcanvas-end {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: var(--bs-offcanvas-width);
+            max-height: 80vh;
+            transform: translate(100%, -50%) !important;
+            border-radius: 12px;
+        }
+        .offcanvas-end.show {
+            transform: translate(-50%, -50%) !important;
+        }
+
+        .navbar-toggler {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+        }
+        @media (max-width: 991px) {
+            .navbar-nav {
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                padding: 10px;
+                margin-top: 10px;
+            }
+            
+            .user-info {
+                margin: 10px 0;
+                text-align: center;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.min.css">
+    
+    <script>
+        const botonCerrarSesion = () => {
+            Swal.fire({
+                title: '¿Esta Seguro?',
+                text: "Debera iniciar sesion nuevamente!",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/logout";
+                }
+                })
+        }
+        
+    </script>
+    <style>
+        .navbar-brand {
+            font-weight: bold;
+            color: #fff !important;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+        }
+        .table-responsive {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table thead:not(.table-dark) {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .badge {
+            font-size: 0.8em;
+        }
+        .activity-photo {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+    <style>
+        .swal2-container{z-index:1200 !important;}
+        .offcanvas.offcanvas-end { right: 0; left: auto !important; top: 0; bottom: 0; height: 100vh; }
+        .offcanvas.offcanvas-end:not(.show) { transform: translateX(100%) !important; }
+        .offcanvas.offcanvas-end.show { transform: translateX(0) !important; }
+        .navbar-modern {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1100;
+        }
+        .nav-link-modern {
+            color: white !important;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 12px 20px !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin: 0 2px;
+            border-left: none !important;
+            position: relative;
+        }
+        .nav-link-modern:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: white !important;
+        }
+        .navbar-brand-modern { font-weight: 600; font-size: 1.4rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: all 0.3s ease; }
+    </style>
+</head>
+<body style="overflow-x:hidden;">
+    {% if cargo == "DIRECTOR" %}
+
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_certificados' %}"><i class="fas fa-certificate me-2"></i>Certificados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-users me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_historial"><i class="fas fa-clock-rotate-left me-2"></i>Historial de Acciones</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% elif cargo == "PROFESOR" %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+					
+					{% if datpro %}
+						<div class="user-info text-white" style="margin-right:20px; font-size:0.9rem;">
+							<div><strong>Profesor:</strong> {{ datpro.0.nombre }} {{ datpro.0.apellido }}</div>
+							<div><strong>RUT:</strong> {{ datpro.0.rut }}</div>
+						</div>
+					{% endif %}
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% elif cargo == "ESTUDIANTE" %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+					
+					{% if datest %}
+					<div class="user-info text-white" style="margin-right:20px; font-size:0.9rem;">
+						<div><strong>Alumno:</strong> {{ datest.0.nombre }} {{ datest.0.apellido_paterno }}</div>
+						<div><strong>Curso:</strong> {{ datest.0.curso }}</div>
+						<div><strong>RUN:</strong> {{ datest.0.run }}</div>
+					</div>
+					{% endif %}
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% else %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_profesor"><i class="fas fa-user-plus me-2"></i>Registrar Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_asignaturas"><i class="fas fa-book me-2"></i>Registrar Asignaturas</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_horarios"><i class="fas fa-calendar-plus me-2"></i>Crear Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/listar_alumnos"><i class="fas fa-users me-2"></i>Listar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_alumno"><i class="fas fa-user-plus me-2"></i>Registrar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_atenciones' %}"><i class="fas fa-briefcase-medical me-2"></i>Atenciones</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-user-group me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% endif %}
+
+    <div class="container-fluid mt-4">
+
+        <!-- Mensajes -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Tabla de Actividades -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-calendar-event" style="font-size: 1.2rem;"></i>
+                    <span class="fw-semibold">Gestión de Actividades</span>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="text-muted">Total de actividades: {{ actividades|length }}</span>
+                    <a href="{% url 'mostrar_registrar_actividad' %}" class="btn btn-success">
+                        <i class="bi bi-plus-lg me-2"></i>Nueva Actividad
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if actividades %}
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Nombre</th>
+                                    <th>Profesor</th>
+                                    <th>Fecha Planificada</th>
+                                    <th>Participantes</th>
+                                    <th>Fotos</th>
+                                    <th>Fecha Registro</th>
+                                    {%if cargo != "PROFESOR"%}
+                                        <th>Acciones</th>
+                                    {%endif%}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for actividad in actividades %}
+                                    <tr>
+                                        <td>
+                                            <span class="badge bg-primary">{{ actividad.get_Tipo_display }}</span>
+                                        </td>
+                                        <td>
+                                            <strong>{{ actividad.Nombre }}</strong>
+                                            {% if actividad.Observacion %}
+                                                <br><small class="text-muted">{{ actividad.Observacion|truncatechars:50 }}</small>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <i class="fas fa-user me-1"></i>
+                                            {{ actividad.Profesor.get_full_name|default:actividad.Profesor.username }}
+                                        </td>
+                                        <td>
+                                            <i class="fas fa-calendar me-1"></i>
+                                            {{ actividad.FechaHoraPlanificada|date:"d/m/Y H:i" }}
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info">{{ actividad.NumeroParticipantesActividad }}</span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-1">
+                                                {% if actividad.Foto1 %}
+                                                    <img src="{{ actividad.Foto1.url }}" alt="Foto 1" class="activity-photo" data-bs-toggle="tooltip" title="Foto 1">
+                                                {% endif %}
+                                                {% if actividad.Foto2 %}
+                                                    <img src="{{ actividad.Foto2.url }}" alt="Foto 2" class="activity-photo" data-bs-toggle="tooltip" title="Foto 2">
+                                                {% endif %}
+                                                {% if actividad.Foto3 %}
+                                                    <img src="{{ actividad.Foto3.url }}" alt="Foto 3" class="activity-photo" data-bs-toggle="tooltip" title="Foto 3">
+                                                {% endif %}
+                                                {% if not actividad.Foto1 and not actividad.Foto2 and not actividad.Foto3 %}
+                                                    <span class="text-muted">Sin fotos</span>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">
+                                                {{ actividad.FechaHoraRegistro|date:"d/m/Y H:i" }}
+                                            </small>
+                                        </td>
+                                        {%if cargo != "PROFESOR"%}
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a href="{% url 'mostrar_modificar_actividad' actividad.hash_id %}" 
+                                                    class="btn btn-sm btn-outline-primary" 
+                                                    data-bs-toggle="tooltip" 
+                                                    title="Modificar">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                <!--    <button type="button" 
+                                                            class="btn btn-sm btn-outline-danger" 
+                                                            onclick="confirmarEliminacion('{{ actividad.hash_id }}', '{{ actividad.Nombre }}')"
+                                                            data-bs-toggle="tooltip" 
+                                                            title="Eliminar">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button> -->
+                                                </div>
+                                            </td>
+                                        {%endif%}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No hay actividades registradas</h5>
+                        <p class="text-muted">Comienza registrando tu primera actividad educativa</p>
+                        <a href="{% url 'mostrar_registrar_actividad' %}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Registrar Primera Actividad
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Inicializar tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+    
+
+        // Función para confirmar deshabilitación
+        function confirmarEliminacion(hashId, nombre) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: `¿Deseas deshabilitar la actividad "${nombre}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, deshabilitar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/eliminar_actividad/${hashId}`;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+        

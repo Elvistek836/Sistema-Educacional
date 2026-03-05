@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		{% load static %}
+		<link rel="icon" href="{% static "/imagenes/logo.PNG"%}"/>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+		<meta charset="UTF-8"/>
+		<title>Registrar Disponibilidad</title>
+
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.all.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.min.css">
+
+		<!-- JavaScript --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+		<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+		<!-- CSS -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+		<!-- Default theme -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+		<!-- Semantic UI theme -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+		<!-- Bootstrap theme -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+		<script>
+            const botonCerrarSesion = () => {
+                Swal.fire({
+					title: '¿Esta Seguro?',
+					text: "Debera iniciar sesion nuevamente!",
+					icon: 'question',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Aceptar',
+					cancelButtonText: 'Cancelar'
+				  }).then((result) => {
+					if (result.isConfirmed) {
+						window.location.href = "/logout";
+					}
+				  })
+            }
+			const botonEliminar = (id) => {
+                Swal.fire({
+					title: '¿Esta Seguro?',
+					text: "Desea Eliminar Disponibilidad del Profesor?",
+					icon: 'question',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Aceptar',
+					cancelButtonText: 'Cancelar'
+				  }).then((result) => {
+					if (result.isConfirmed) {
+						window.location.href = "/eliminar_dispo/"+id;
+					}
+				  })
+            }
+            
+        </script>
+
+		<style>
+            body {
+                background: #ffffff;
+                min-height: 100vh;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                z-index: 1000;
+            }
+			
+            .navbar-modern {
+                background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+                box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+                border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                z-index: 1100;
+            }
+            .table thead {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+            }
+			
+			.navbar-brand-modern {
+				font-weight: 600;
+				font-size: 1.4rem;
+				text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+				transition: all 0.3s ease;
+			}
+			
+			.navbar-brand-modern:hover {
+				transform: scale(1.05);
+			}
+			
+			.nav-link-modern {
+				color: white !important;
+				font-weight: 500;
+				font-size: 1rem;
+				padding: 12px 20px !important;
+				border-radius: 8px;
+				transition: all 0.3s ease;
+				margin: 0 2px;
+				border-left: none !important;
+				position: relative;
+			}
+			
+			.nav-link-modern:hover {
+				background: rgba(255, 255, 255, 0.2);
+				transform: translateY(-2px);
+				box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+				color: white !important;
+			}
+			
+			.nav-link-modern:active {
+				transform: translateY(0);
+			}
+			
+			.logo-container {
+				transition: all 0.3s ease;
+			}
+			
+			.logo-container:hover {
+				transform: scale(1.05);
+			}
+			
+			.banner-container {
+				text-align: center;
+				padding: 40px 20px;
+				background: rgba(255, 255, 255, 0.95);
+				margin: 30px auto;
+				border-radius: 20px;
+				box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+				backdrop-filter: blur(10px);
+				border: 1px solid rgba(255, 255, 255, 0.2);
+				max-width: 90%;
+			}
+			
+			.banner-image {
+				max-width: 100%;
+				height: auto;
+				border-radius: 15px;
+				box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+				transition: all 0.3s ease;
+			}
+			
+			.banner-image:hover {
+				transform: scale(1.02);
+				box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+			}
+			
+			.navbar-toggler {
+				border: 2px solid rgba(255, 255, 255, 0.3);
+				border-radius: 8px;
+			}
+			
+			.navbar-toggler:focus {
+				box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+			}
+			
+			@media (max-width: 991px) {
+				.navbar-nav {
+					background: rgba(0, 0, 0, 0.1);
+					border-radius: 10px;
+					padding: 10px;
+					margin-top: 10px;
+				}
+			}
+			.navbar-modern {
+				background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+				box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+				border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+				backdrop-filter: blur(10px);
+				z-index: 1100;
+			}
+
+			.navbar-brand-modern {
+				font-weight: 600;
+				font-size: 1.4rem;
+				text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+				transition: all 0.3s ease;
+			}
+
+			.navbar-brand-modern:hover {
+				transform: scale(1.05);
+			}
+
+			.nav-link-modern {
+				color: white !important;
+				font-weight: 500;
+				font-size: 1rem;
+				padding: 12px 16px !important;
+				border-radius: 10px;
+				transition: all 0.3s ease;
+				margin: 0 2px;
+				border-left: none !important;
+				position: relative;
+				display: flex;
+				align-items: center;
+				justify-content: flex-start;
+			}
+
+			.nav-link-modern:hover {
+				background: rgba(255, 255, 255, 0.2);
+				transform: translateY(-2px);
+				box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+				color: white !important;
+			}
+
+			.nav-link-modern:active {
+				transform: translateY(0);
+			}
+
+			.offcanvas .offcanvas-body.navbar-nav {
+				display: flex;
+				flex-direction: column;
+				flex-wrap: nowrap;
+				gap: 8px;
+				height: calc(100vh - 140px);
+				align-content: flex-start;
+			}
+
+			.offcanvas-end {
+				position: fixed;
+				top: 50%;
+				left: 66.5%;
+				width: var(--bs-offcanvas-width);
+				max-height: 80vh;
+				transform: translate(100%) !important;
+				border-radius: 12px;
+			}
+
+			.navbar-toggler {
+				border: 2px solid rgba(255, 255, 255, 0.3);
+				border-radius: 8px;
+			}
+
+			.navbar-toggler:focus {
+				box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+			}
+			@media (max-width: 991px) {
+				.navbar-nav {
+					background: rgba(0, 0, 0, 0.1);
+					border-radius: 10px;
+					padding: 10px;
+					margin-top: 10px;
+				}
+				
+				.user-info {
+					margin: 10px 0;
+					text-align: center;
+					font-size: 0.8rem;
+				}
+			}
+		</style>
+
+        <style>.swal2-container{z-index:1200 !important;}</style>
+        <style>
+            .professor-info {
+                text-align: center;
+                margin: 20px auto;
+                padding: 20px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+                max-width: 900px;
+            }
+            .table-container {
+                background: rgba(255, 255, 255, 0.95);
+                border-radius: 20px;
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                padding: 30px;
+                margin: 30px auto;
+                max-width: 95%;
+            }
+            .table-modern {
+                background: rgba(255, 255, 255, 0.95);
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+                border: none;
+            }
+            .table-modern thead {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+            }
+            .table-modern thead th {
+                border: none;
+                padding: 16px 12px;
+                font-weight: 600;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            .table-modern tbody tr {
+                transition: all 0.3s ease;
+                border: none;
+            }
+            .table-modern tbody tr:hover {
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+            .table-modern tbody td {
+                border: none;
+                padding: 12px;
+                vertical-align: middle;
+            }
+            .table-modern .btn {
+                color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+            }
+            .table-modern .btn:hover {
+                transform: translateY(-2px);
+            }
+        </style>
+    </head>
+<body style="overflow-x:hidden;">
+	
+	{% if cargo == "DIRECTOR" %}
+
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_certificados' %}"><i class="fas fa-certificate me-2"></i>Certificados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-users me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_historial"><i class="fas fa-clock-rotate-left me-2"></i>Historial de Acciones</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% elif cargo == "PROFESOR" %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+					
+					{% if datpro %}
+						<div class="user-info text-white" style="margin-right:20px; font-size:0.9rem;">
+							<div><strong>Profesor:</strong> {{ datpro.0.nombre }} {{ datpro.0.apellido }}</div>
+							<div><strong>RUT:</strong> {{ datpro.0.rut }}</div>
+						</div>
+					{% endif %}
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% elif cargo == "ESTUDIANTE" %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+					
+					{% if datest %}
+					<div class="user-info text-white" style="margin-right:20px; font-size:0.9rem;">
+						<div><strong>Alumno:</strong> {{ datest.0.nombre }} {{ datest.0.apellido_paterno }}</div>
+						<div><strong>Curso:</strong> {{ datest.0.curso }}</div>
+						<div><strong>RUN:</strong> {{ datest.0.run }}</div>
+					</div>
+					{% endif %}
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% else %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_profesor"><i class="fas fa-user-plus me-2"></i>Registrar Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_asignaturas"><i class="fas fa-book me-2"></i>Registrar Asignaturas</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_horarios"><i class="fas fa-calendar-plus me-2"></i>Crear Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/listar_alumnos"><i class="fas fa-users me-2"></i>Listar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_alumno"><i class="fas fa-user-plus me-2"></i>Registrar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_atenciones' %}"><i class="fas fa-briefcase-medical me-2"></i>Atenciones</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-user-group me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_certificados' %}"><i class="fas fa-certificate me-2"></i>Certificados</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% endif %}
+	<br>
+	<br>
+    <div class="professor-info">
+        <div><strong>Disponibilidad del Profesor</strong></div>
+        <div style="font-size:1.2rem">{{rs.0.nombre}} {{rs.0.apellido}}</div>
+        <div style="opacity:0.9">RUN: {{rs.0.rut}}</div>
+    </div>
+    <div class="text-center" style="margin-bottom:15px;">
+        <a href="/registrar_profesor" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Volver a Profesores
+        </a>
+    </div>
+	<br>
+	<br>
+    <div class="container">
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table table-modern">
+                    <thead>
+                        <tr class="text-center">
+                            <th><i class="bi bi-grid"></i> BLOQUE</th>
+                            <th><i class="bi bi-calendar-week"></i> LUNES</th>
+                            <th><i class="bi bi-calendar-week"></i> MARTES</th>
+                            <th><i class="bi bi-calendar-week"></i> MIÉRCOLES</th>
+                            <th><i class="bi bi-calendar-week"></i> JUEVES</th>
+                            <th><i class="bi bi-calendar-week"></i> VIERNES</th>
+                        </tr>
+                    </thead>
+			<tbody class="text-center">
+				<tr class="align-middle">
+					<td style="background-color: yellow">1</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 1 and a.dia == "LUNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 1 and a.dia == "MARTES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 1 and a.dia == "MIERCOLES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 1 and a.dia == "JUEVES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 1 and a.dia == "VIERNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+				</tr>
+				<tr class="align-middle">
+					<td style="background-color: yellow">2</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 2 and a.dia == "LUNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 2 and a.dia == "MARTES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 2 and a.dia == "MIERCOLES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 2 and a.dia == "JUEVES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 2 and a.dia == "VIERNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+				</tr>
+				<tr class="align-middle">
+					<td style="background-color: yellow">3</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 3 and a.dia == "LUNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 3 and a.dia == "MARTES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 3 and a.dia == "MIERCOLES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 3 and a.dia == "JUEVES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 3 and a.dia == "VIERNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+				</tr>
+				<tr class="align-middle">
+					<td style="background-color: yellow">4</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 4 and a.dia == "LUNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 4 and a.dia == "MARTES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 4 and a.dia == "MIERCOLES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 4 and a.dia == "JUEVES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 4 and a.dia == "VIERNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+				</tr>
+				<tr class="align-middle">
+					<td style="background-color: yellow">5</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 5 and a.dia == "LUNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 5 and a.dia == "MARTES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 5 and a.dia == "MIERCOLES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 5 and a.dia == "JUEVES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 5 and a.dia == "VIERNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+				</tr>
+				<tr class="align-middle">
+					<td style="background-color: yellow">6</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 6 and a.dia == "LUNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 6 and a.dia == "MARTES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 6 and a.dia == "MIERCOLES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 6 and a.dia == "JUEVES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 6 and a.dia == "VIERNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+				</tr>
+				<tr class="align-middle">
+					<td style="background-color: yellow">7</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 7 and a.dia == "LUNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 7 and a.dia == "MARTES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 7 and a.dia == "MIERCOLES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 7 and a.dia == "JUEVES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 7 and a.dia == "VIERNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+				</tr>
+				<tr class="align-middle">
+					<td style="background-color: yellow">8</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 8 and a.dia == "LUNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 8 and a.dia == "MARTES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 8 and a.dia == "MIERCOLES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 8 and a.dia == "JUEVES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 8 and a.dia == "VIERNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+				</tr>
+				<tr class="align-middle">
+					<td style="background-color: yellow">9</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 9 and a.dia == "LUNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 9 and a.dia == "MARTES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 9 and a.dia == "MIERCOLES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 9 and a.dia == "JUEVES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+					<td>
+						{%for a in dis%}
+							{%if a.bloque == 9 and a.dia == "VIERNES"%}
+								{%if a.estado == "NO DISPONIBLE"%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:red">{{a.estado}}</a>
+								{%else%}
+									<a href="/cambiar_disponibilidad/{{a.id}}/{{rs.0.id}}" class="btn btn-lg" style="background:green">{{a.estado}}</a>
+								{%endif%}
+							{%endif%}
+						{%endfor%}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	{%if r%}
+		<script> alertify.success('{{r}}');</script>
+	{%endif%}
+
+	{%if r2%}
+		<script> alertify.error('{{r2}}');</script>
+	{%endif%}
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

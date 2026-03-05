@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo|default:"Registrar Certificado" }}</title>
+    <link rel="icon" href="{% static "/imagenes/logo.PNG"%}"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.min.css">
+    <style>
+        body{background:#ffffff;min-height:100vh;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+        .form-container{background:rgba(255,255,255,.95);border-radius:20px;box-shadow:0 15px 35px rgba(0,0,0,.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);padding:40px;margin:30px auto;max-width:800px}
+        .form-title{color:#333;font-weight:600;margin-bottom:20px;text-align:center}
+        .form-control-modern{border:2px solid rgba(102,126,234,.3);border-radius:12px;padding:12px 16px;background:rgba(255,255,255,.9);transition:all .3s ease;margin-bottom:16px;font-size:16px}
+        .form-control-modern:focus{border-color:#667eea;box-shadow:0 0 20px rgba(102,126,234,.3);background:#fff;transform:translateY(-2px);outline:none}
+        .btn-primary-modern{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border:none;color:#fff;padding:12px 28px;border-radius:25px;font-weight:600;transition:all .3s ease}
+        .btn-primary-modern:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(102,126,234,.4)}
+        .header-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+        .navbar-modern {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1100;
+        }
+
+        .navbar-brand-modern {
+            font-weight: 600;
+            font-size: 1.4rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand-modern:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-link-modern {
+            color: white !important;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 12px 16px !important;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin: 0 2px;
+            border-left: none !important;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .nav-link-modern:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: white !important;
+        }
+
+        .nav-link-modern:active {
+            transform: translateY(0);
+        }
+
+        .offcanvas .offcanvas-body.navbar-nav {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            gap: 8px;
+            height: calc(100vh - 140px);
+            align-content: flex-start;
+        }
+
+        .offcanvas-end {
+            position: fixed;
+            top: 50%;
+            left: 67%;
+            width: var(--bs-offcanvas-width);
+            max-height: 80vh;
+            transform: translate(100%) !important;
+            border-radius: 12px;
+        }
+
+        .navbar-toggler {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+        }
+        @media (max-width: 991px) {
+            .navbar-nav {
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                padding: 10px;
+                margin-top: 10px;
+            }
+            
+            .user-info {
+                margin: 10px 0;
+                text-align: center;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-actions mt-3">
+            <a href="{% url 'listar_certificados' %}" class="btn btn-secondary"><i class="fas fa-list me-2"></i>Lista de Certificados</a>
+            <a href="/menu" class="btn btn-outline-dark"><i class="fas fa-arrow-left me-2"></i>Volver al Menú</a>
+        </div>
+
+        <div class="form-container">
+            <h2 class="form-title"><i class="fas fa-certificate me-2"></i>{{ titulo|default:"Registrar Certificado" }}</h2>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" action="{% url 'registrar_certificado' %}" id="formCertificado">
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="alumno_id" class="form-label fw-bold">Alumno <span class="text-danger">*</span></label>
+                        <select id="alumno_id" name="alumno_id" class="form-select form-control-modern" required>
+                            <option value="">Seleccione un alumno</option>
+                            {% for alumno in alumnos %}
+                                <option value="{{ alumno.matricula }}">{{ alumno.nombre }} {{ alumno.apellido_paterno }} {{ alumno.apellido_materno }} - {{ alumno.curso }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="tipo" class="form-label fw-bold">Tipo de Certificado <span class="text-danger">*</span></label>
+                        <select id="tipo" name="tipo" class="form-select form-control-modern" required>
+                            <option value="">Seleccione tipo</option>
+                            <option value="CERTIFICADO DE ENSEÑANZA BASICA">CERTIFICADO DE ENSEÑANZA BASICA</option>
+                            <option value="CERTIFICADO DE ENSEÑANZA MEDIA">CERTIFICADO DE ENSEÑANZA MEDIA</option>
+                            <option value="CERTIFICADO DE NOTAS(CONCENTRACION DE NOTAS)">CERTIFICADO DE NOTAS(CONCENTRACION DE NOTAS)</option>
+                            <option value="CERTIFICADO DE ALUMNO REGULAR">CERTIFICADO DE ALUMNO REGULAR</option>
+                            <option value="CERTIFICADO DE CONDUCTA">CERTIFICADO DE CONDUCTA</option>
+                            <option value="CERTIFICADO DE PARTICIPACION EN ACTIVIDADES EXTRACURRICULARES">CERTIFICADO DE PARTICIPACION EN ACTIVIDADES EXTRACURRICULARES</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Motivo <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-modern" value="EL que estime conveniente" disabled>
+                        <input type="hidden" name="motivo" value="EL que estime conveniente">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Lugar de Presentación <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-modern" value="EL que estime conveniente" disabled>
+                        <input type="hidden" name="lugar" value="EL que estime conveniente">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Estado <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-modern" value="PENDIENTE" disabled>
+                        <input type="hidden" name="estado" value="PENDIENTE">
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end mt-3">
+                    <a href="{% url 'listar_certificados' %}" class="btn btn-secondary me-2"><i class="fas fa-arrow-left me-2"></i>Volver</a>
+                    <button type="submit" class="btn btn-primary-modern"><i class="fas fa-save me-2"></i>Registrar Certificado</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

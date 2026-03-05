@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <link rel="icon" href="{% static "/imagenes/logo.PNG"%}"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }} - Sistema Educacional</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+		
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .navbar-brand {
+            font-weight: bold;
+            color: #fff !important;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+        }
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .file-upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .file-upload-area:hover {
+            border-color: #667eea;
+            background-color: #f8f9fa;
+        }
+        .current-image {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 8px;
+            margin: 10px;
+        }
+        .preview-image {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 8px;
+            margin: 10px;
+        }
+        .image-container {
+            position: relative;
+            display: inline-block;
+        }
+        .remove-image-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(220, 53, 69, 0.8);
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            color: white;
+            font-size: 12px;
+        }
+        .navbar-modern {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1100;
+        }
+
+        .navbar-brand-modern {
+            font-weight: 600;
+            font-size: 1.4rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand-modern:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-link-modern {
+            color: white !important;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 12px 16px !important;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin: 0 2px;
+            border-left: none !important;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .nav-link-modern:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: white !important;
+        }
+
+        .nav-link-modern:active {
+            transform: translateY(0);
+        }
+
+        .offcanvas .offcanvas-body.navbar-nav {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            gap: 8px;
+            height: calc(100vh - 140px);
+            align-content: flex-start;
+        }
+
+        .offcanvas-end {
+            position: fixed;
+            top: 50%;
+            left: 67%;
+            width: var(--bs-offcanvas-width);
+            max-height: 80vh;
+            transform: translate(100%) !important;
+            border-radius: 12px;
+        }
+
+        .navbar-toggler {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+        }
+        @media (max-width: 991px) {
+            .navbar-nav {
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                padding: 10px;
+                margin-top: 10px;
+            }
+            
+            .user-info {
+                margin: 10px 0;
+                text-align: center;
+                font-size: 0.8rem;
+            }
+        }
+        body{
+            background-color:#ffffff;
+        }
+    </style>
+</head>
+<body style="overflow-x:hidden;">
+    {% if cargo == "DIRECTOR" %}
+
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_certificados' %}"><i class="fas fa-certificate me-2"></i>Certificados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-users me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_historial"><i class="fas fa-clock-rotate-left me-2"></i>Historial de Acciones</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% elif cargo == "PROFESOR" %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+					
+					{% if datpro %}
+						<div class="user-info text-white" style="margin-right:20px; font-size:0.9rem;">
+							<div><strong>Profesor:</strong> {{ datpro.0.nombre }} {{ datpro.0.apellido }}</div>
+							<div><strong>RUT:</strong> {{ datpro.0.rut }}</div>
+						</div>
+					{% endif %}
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% elif cargo == "ESTUDIANTE" %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+					
+					{% if datest %}
+					<div class="user-info text-white" style="margin-right:20px; font-size:0.9rem;">
+						<div><strong>Alumno:</strong> {{ datest.0.nombre }} {{ datest.0.apellido_paterno }}</div>
+						<div><strong>Curso:</strong> {{ datest.0.curso }}</div>
+						<div><strong>RUN:</strong> {{ datest.0.run }}</div>
+					</div>
+					{% endif %}
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% else %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_profesor"><i class="fas fa-user-plus me-2"></i>Registrar Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_asignaturas"><i class="fas fa-book me-2"></i>Registrar Asignaturas</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_horarios"><i class="fas fa-calendar-plus me-2"></i>Crear Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/listar_alumnos"><i class="fas fa-users me-2"></i>Listar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_alumno"><i class="fas fa-user-plus me-2"></i>Registrar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_atenciones' %}"><i class="fas fa-briefcase-medical me-2"></i>Atenciones</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-user-group me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% endif %}
+
+    <div class="container mt-4">
+        
+
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <h2 class="text-primary">
+                    <i class="fas fa-edit me-2"></i>
+                    {{ titulo }}
+                </h2>
+                <p class="text-muted">Modifica la información de la actividad: <strong>{{ actividad.Nombre }}</strong></p>
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="{% url 'listar_actividades' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Volver a Lista
+                </a>
+            </div>
+        </div>
+
+        <!-- Mensajes -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Formulario -->
+        <div class="card">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" action="{% url 'modificar_actividad' actividad.hash_id %}" id="actividadForm">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <!-- Información Básica -->
+                        <div class="col-md-6">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Información Básica
+                            </h5>
+                            
+                            <div class="mb-3">
+                                <label for="tipo" class="form-label">
+                                    <i class="fas fa-tag me-1"></i>
+                                    Tipo de Actividad *
+                                </label>
+                                <select class="form-select" id="tipo" name="tipo" required>
+                                    <option value="">Seleccionar tipo...</option>
+                                    <option value="Academica" {% if actividad.Tipo == 'Academica' %}selected{% endif %}>Académica</option>
+                                    <option value="Deportiva" {% if actividad.Tipo == 'Deportiva' %}selected{% endif %}>Deportiva</option>
+                                    <option value="Cultural" {% if actividad.Tipo == 'Cultural' %}selected{% endif %}>Cultural</option>
+                                    <option value="Social" {% if actividad.Tipo == 'Social' %}selected{% endif %}>Social</option>
+                                    <option value="Recreativa" {% if actividad.Tipo == 'Recreativa' %}selected{% endif %}>Recreativa</option>
+                                    <option value="Cientifica" {% if actividad.Tipo == 'Cientifica' %}selected{% endif %}>Científica</option>
+                                    <option value="Artistica" {% if actividad.Tipo == 'Artistica' %}selected{% endif %}>Artística</option>
+                                    <option value="Comunitaria" {% if actividad.Tipo == 'Comunitaria' %}selected{% endif %}>Comunitaria</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">
+                                    <i class="fas fa-signature me-1"></i>
+                                    Nombre de la Actividad *
+                                </label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" 
+                                       value="{{ actividad.Nombre }}" required maxlength="200">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="fecha_planificada" class="form-label">
+                                    <i class="fas fa-calendar-alt me-1"></i>
+                                    Fecha y Hora Planificada *
+                                </label>
+                                <input type="datetime-local" class="form-control" id="fecha_planificada" 
+                                       name="fecha_planificada" value="{{ actividad.FechaHoraPlanificada|date:'Y-m-d\TH:i' }}" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="participantes" class="form-label">
+                                    <i class="fas fa-users me-1"></i>
+                                    Número de Participantes
+                                </label>
+                                <input type="number" class="form-control" id="participantes" name="participantes" 
+                                       value="{{ actividad.NumeroParticipantesActividad }}" min="0" max="9999">
+                            </div>
+
+                            <!-- Información de registro -->
+                            <div class="alert alert-info">
+                                <h6><i class="fas fa-info-circle me-2"></i>Información de Registro</h6>
+                                <p class="mb-1"><strong>Profesor:</strong> {{ actividad.Profesor.get_full_name|default:actividad.Profesor.username }}</p>
+                                <p class="mb-0"><strong>Fecha de Registro:</strong> {{ actividad.FechaHoraRegistro|date:"d/m/Y H:i" }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Observaciones y Fotos -->
+                        <div class="col-md-6">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-camera me-2"></i>
+                                Detalles Adicionales
+                            </h5>
+                            
+                            <div class="mb-3">
+                                <label for="observacion" class="form-label">
+                                    <i class="fas fa-comment-alt me-1"></i>
+                                    Observaciones
+                                </label>
+                                <textarea class="form-control" id="observacion" name="observacion" 
+                                          rows="4" placeholder="Descripción detallada de la actividad...">{{ actividad.Observacion }}</textarea>
+                            </div>
+
+                            <!-- Fotos Actuales y Nuevas -->
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-images me-1"></i>
+                                    Fotos de la Actividad
+                                </label>
+                                
+                                <div class="row">
+                                    <!-- Foto 1 -->
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label small">Foto 1</label>
+                                        {% if actividad.Foto1 %}
+                                            <div class="text-center mb-2">
+                                                <div class="image-container">
+                                                    <img src="{{ actividad.Foto1.url }}" alt="Foto 1 actual" class="current-image">
+                                                </div>
+                                                <p class="small text-muted">Foto actual</p>
+                                            </div>
+                                        {% endif %}
+                                        <div class="file-upload-area" onclick="document.getElementById('foto1').click()">
+                                            <i class="fas fa-camera fa-2x text-muted mb-2"></i>
+                                            <p class="mb-0 small">{% if actividad.Foto1 %}Cambiar{% else %}Agregar{% endif %} Foto 1</p>
+                                            <input type="file" id="foto1" name="foto1" accept="image/*" style="display: none;" onchange="previewImage(this, 'preview1')">
+                                        </div>
+                                        <div id="preview1" class="text-center"></div>
+                                    </div>
+                                    
+                                    <!-- Foto 2 -->
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label small">Foto 2</label>
+                                        {% if actividad.Foto2 %}
+                                            <div class="text-center mb-2">
+                                                <div class="image-container">
+                                                    <img src="{{ actividad.Foto2.url }}" alt="Foto 2 actual" class="current-image">
+                                                </div>
+                                                <p class="small text-muted">Foto actual</p>
+                                            </div>
+                                        {% endif %}
+                                        <div class="file-upload-area" onclick="document.getElementById('foto2').click()">
+                                            <i class="fas fa-camera fa-2x text-muted mb-2"></i>
+                                            <p class="mb-0 small">{% if actividad.Foto2 %}Cambiar{% else %}Agregar{% endif %} Foto 2</p>
+                                            <input type="file" id="foto2" name="foto2" accept="image/*" style="display: none;" onchange="previewImage(this, 'preview2')">
+                                        </div>
+                                        <div id="preview2" class="text-center"></div>
+                                    </div>
+                                    
+                                    <!-- Foto 3 -->
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label small">Foto 3</label>
+                                        {% if actividad.Foto3 %}
+                                            <div class="text-center mb-2">
+                                                <div class="image-container">
+                                                    <img src="{{ actividad.Foto3.url }}" alt="Foto 3 actual" class="current-image">
+                                                </div>
+                                                <p class="small text-muted">Foto actual</p>
+                                            </div>
+                                        {% endif %}
+                                        <div class="file-upload-area" onclick="document.getElementById('foto3').click()">
+                                            <i class="fas fa-camera fa-2x text-muted mb-2"></i>
+                                            <p class="mb-0 small">{% if actividad.Foto3 %}Cambiar{% else %}Agregar{% endif %} Foto 3</p>
+                                            <input type="file" id="foto3" name="foto3" accept="image/*" style="display: none;" onchange="previewImage(this, 'preview3')">
+                                        </div>
+                                        <div id="preview3" class="text-center"></div>
+                                    </div>
+                                </div>
+                                
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Si seleccionas una nueva foto, reemplazará la foto actual. Formatos: JPG, PNG, GIF. Máximo: 5MB.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'listar_actividades' %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times me-2"></i>Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Guardar Cambios
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Función para confirmar logout
+        function confirmarLogout() {
+            Swal.fire({
+                title: '¿Cerrar Sesión?',
+                text: '¿Estás seguro de que deseas cerrar sesión?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, cerrar sesión',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '{% url "logout" %}';
+                }
+            });
+        }
+
+        // Función para previsualizar imágenes
+        function previewImage(input, previewId) {
+            const preview = document.getElementById(previewId);
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <div class="mt-2">
+                            <p class="small text-success mb-1">Nueva foto seleccionada:</p>
+                            <img src="${e.target.result}" class="preview-image" alt="Preview">
+                            <br>
+                            <button type="button" class="btn btn-sm btn-outline-danger mt-1" onclick="removeImage('${input.id}', '${previewId}')">
+                                <i class="fas fa-trash"></i> Quitar
+                            </button>
+                        </div>
+                    `;
+                };
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Función para quitar imagen
+        function removeImage(inputId, previewId) {
+            document.getElementById(inputId).value = '';
+            document.getElementById(previewId).innerHTML = '';
+        }
+
+        // Validación del formulario
+        document.getElementById('actividadForm').addEventListener('submit', function(e) {
+            const nombre = document.getElementById('nombre').value.trim();
+            const tipo = document.getElementById('tipo').value;
+            const fecha = document.getElementById('fecha_planificada').value;
+            
+            if (!nombre || !tipo || !fecha) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Campos Requeridos',
+                    text: 'Por favor completa todos los campos marcados con asterisco (*)',
+                    icon: 'warning',
+                    confirmButtonText: 'Entendido'
+                });
+                return;
+            }
+        });
+    </script>
+</body>
+</html>

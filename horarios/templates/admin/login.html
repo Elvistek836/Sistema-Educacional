@@ -1,0 +1,51 @@
+
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Inicio de sesión - Administración{% endblock %}
+
+{% block extrastyle %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/custom_login.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+{% endblock %}
+
+{% block extrahead %}
+    <script src="{% static 'horarios/static/admin/js/custom.js' %}" ></script>
+{% endblock %}
+
+{% block nav-global %}
+<nav class="navbar">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Instituto Lautaro</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="custom-login-wrapper">
+    <div class="login-box">
+        <img src="{% static '/imagenes/logo.PNG' %}" alt="Logo" class="custom-logo">
+        <h2 class="login-heading">Sistema Instituto Lautaro</h2>
+        <form method="post" action="{% url 'admin:login' %}">
+            {% csrf_token %}
+            <div class="input-wrapper">
+                {{ form.username.label_tag }}
+                <br>
+                <i class="bi bi-person"></i> {{ form.username }}
+            </div>
+            <div class="input-wrapper">
+                {{ form.password.label_tag }}
+                <br>
+                <i class="bi bi-key"></i> {{ form.password }}
+            </div>
+            <div class="submit-wrapper">
+                <button type="submit" class="login-button">Iniciar Sesion</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

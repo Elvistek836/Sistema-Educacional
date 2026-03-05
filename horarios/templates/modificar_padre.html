@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <link rel="icon" href="{% static "/imagenes/logo.PNG"%}"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Padre/Apoderado - Sistema Educacional</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body { background: #ffffff; }
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin: 20px 0;
+        }
+        .section-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .info-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .required {
+            color: #dc3545;
+        }
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            color: white;
+            font-weight: 500;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            color: white;
+        }
+        .parent-type-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .parent-type-option {
+            flex: 1;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .parent-type-option:hover {
+            border-color: #667eea;
+            background-color: #f8f9ff;
+        }
+        .parent-type-option.selected {
+            border-color: #667eea;
+            background-color: #667eea;
+            color: white;
+        }
+        .parent-type-option input[type="radio"] {
+            display: none;
+        }
+        .info-card {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .current-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .navbar-modern {
+	background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+	box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+	border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(10px);
+	z-index: 1100;
+}
+
+.navbar-brand-modern {
+	font-weight: 600;
+	font-size: 1.4rem;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+	transition: all 0.3s ease;
+}
+
+.navbar-brand-modern:hover {
+	transform: scale(1.05);
+}
+
+.nav-link-modern {
+	color: white !important;
+	font-weight: 500;
+	font-size: 1rem;
+	padding: 12px 16px !important;
+	border-radius: 10px;
+	transition: all 0.3s ease;
+	margin: 0 2px;
+	border-left: none !important;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.nav-link-modern:hover {
+	background: rgba(255, 255, 255, 0.2);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+	color: white !important;
+}
+
+.nav-link-modern:active {
+	transform: translateY(0);
+}
+
+.offcanvas .offcanvas-body.navbar-nav {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	gap: 8px;
+	height: calc(100vh - 140px);
+	align-content: flex-start;
+}
+
+.offcanvas-end {
+	position: fixed;
+	top: 50%;
+	left: 67%;
+	width: var(--bs-offcanvas-width);
+	max-height: 80vh;
+	transform: translate(100%) !important;
+	border-radius: 12px;
+}
+
+.navbar-toggler {
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	border-radius: 8px;
+}
+
+.navbar-toggler:focus {
+	box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+@media (max-width: 991px) {
+	.navbar-nav {
+		background: rgba(0, 0, 0, 0.1);
+		border-radius: 10px;
+		padding: 10px;
+		margin-top: 10px;
+	}
+	
+	.user-info {
+		margin: 10px 0;
+		text-align: center;
+		font-size: 0.8rem;
+	}
+}
+    </style>
+</head>
+<body style="overflow-x:hidden;">
+    {% if cargo == "DIRECTOR" %}
+
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_certificados' %}"><i class="fas fa-certificate me-2"></i>Certificados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-users me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_historial"><i class="fas fa-clock-rotate-left me-2"></i>Historial de Acciones</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% elif cargo == "PROFESOR" %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+					
+					{% if datpro %}
+						<div class="user-info text-white" style="margin-right:20px; font-size:0.9rem;">
+							<div><strong>Profesor:</strong> {{ datpro.0.nombre }} {{ datpro.0.apellido }}</div>
+							<div><strong>RUT:</strong> {{ datpro.0.rut }}</div>
+						</div>
+					{% endif %}
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% elif cargo == "ESTUDIANTE" %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+					
+					{% if datest %}
+					<div class="user-info text-white" style="margin-right:20px; font-size:0.9rem;">
+						<div><strong>Alumno:</strong> {{ datest.0.nombre }} {{ datest.0.apellido_paterno }}</div>
+						<div><strong>Curso:</strong> {{ datest.0.curso }}</div>
+						<div><strong>RUN:</strong> {{ datest.0.run }}</div>
+					</div>
+					{% endif %}
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% else %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_profesor"><i class="fas fa-user-plus me-2"></i>Registrar Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_asignaturas"><i class="fas fa-book me-2"></i>Registrar Asignaturas</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_horarios"><i class="fas fa-calendar-plus me-2"></i>Crear Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/listar_alumnos"><i class="fas fa-users me-2"></i>Listar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_alumno"><i class="fas fa-user-plus me-2"></i>Registrar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_atenciones' %}"><i class="fas fa-briefcase-medical me-2"></i>Atenciones</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-user-group me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% endif %}
+    <div class="container py-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2><i class="fas fa-user-edit me-2"></i>Modificar Padre/Apoderado</h2>
+                    <a href="{% url 'listar_padres' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Volver a la Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="form-container">
+                    <!-- Información actual -->
+                    <div class="current-info">
+                        <h6><i class="fas fa-info-circle me-2"></i>Información Actual</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <strong>Nombre:</strong> {{ padre.nombre }} {{ padre.apellido_paterno }} {{ padre.apellido_materno }}<br>
+                                <strong>RUN:</strong> {{ padre.run }}<br>
+                                <strong>Tipo:</strong> {% if padre.es_madre %}Madre{% else %}Padre{% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Alumno:</strong> {{ padre.alumno.nombre }} {{ padre.alumno.apellido_paterno }}<br>
+                                <strong>Teléfono:</strong> {{ padre.fono|default:"No registrado" }}<br>
+                                <strong>Edad:</strong> {{ padre.edad|default:"No registrada" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <i class="fas fa-edit me-2"></i>
+                        <strong>Modificación:</strong> Complete los campos que desea actualizar. Los campos obligatorios están marcados con <span class="required">*</span>.
+                    </div>
+
+                    <form method="post" id="padreForm" action="{% url 'modificar_padre' id_padre=padre.id %}">
+                        {% csrf_token %}
+                        
+                        <!-- Selección de tipo de padre -->
+                        <div class="section-header">
+                            <h5 class="mb-0"><i class="fas fa-user-tag me-2"></i>Tipo de Padre/Apoderado <span class="required">*</span></h5>
+                        </div>
+                        
+                        <div class="parent-type-selector">
+                            <div class="parent-type-option {% if not padre.es_madre %}selected{% endif %}" onclick="selectParentType(false)">
+                                <input type="radio" name="es_madre" value="False" id="padre" {% if not padre.es_madre %}checked{% endif %} required>
+                                <i class="fas fa-male fa-2x mb-2"></i>
+                                <h6>Padre</h6>
+                                <small class="text-muted">Figura paterna</small>
+                            </div>
+                            <div class="parent-type-option {% if padre.es_madre %}selected{% endif %}" onclick="selectParentType(true)">
+                                <input type="radio" name="es_madre" value="True" id="madre" {% if padre.es_madre %}checked{% endif %} required>
+                                <i class="fas fa-female fa-2x mb-2"></i>
+                                <h6>Madre</h6>
+                                <small class="text-muted">Figura materna</small>
+                            </div>
+                        </div>
+
+                        <!-- Información del alumno -->
+                        <div class="section-header">
+                            <h5 class="mb-0"><i class="fas fa-graduation-cap me-2"></i>Información del Alumno</h5>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="alumno" class="form-label">Alumno <span class="required">*</span></label>
+                            <select class="form-select" id="alumno" name="alumno" required>
+                                <option value="" disabled>Seleccione un alumno</option>
+                                {% for alumno in alumnos %}
+                                    <option value="{{ alumno.pk }}" {% if alumno.pk == padre.alumno.pk %}selected{% endif %}>
+                                        {{ alumno.nombre }} {{ alumno.apellido_paterno }} {{ alumno.apellido_materno }} - {{ alumno.curso }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Información personal -->
+                        <div class="section-header">
+                            <h5 class="mb-0"><i class="fas fa-id-card me-2"></i>Información Personal</h5>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="run" class="form-label">RUN <span class="required">*</span></label>
+                                    <input type="text" class="form-control" id="run" name="run" value="{{ padre.run }}" placeholder="12.345.678-9" required maxlength="12">
+                                    <div class="form-text">Formato: 12.345.678-9</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="edad" class="form-label">Edad</label>
+                                    <input type="number" class="form-control" id="edad" name="edad" value="{{ padre.edad|default:'' }}" min="18" max="100" placeholder="Ej: 35">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="nombre" class="form-label">Nombre <span class="required">*</span></label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" value="{{ padre.nombre }}" required maxlength="50" placeholder="Ej: María">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="apellido_paterno" class="form-label">Apellido Paterno <span class="required">*</span></label>
+                                    <input type="text" class="form-control" id="apellido_paterno" name="apellido_paterno" value="{{ padre.apellido_paterno }}" required maxlength="50" placeholder="Ej: González">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="apellido_materno" class="form-label">Apellido Materno</label>
+                                    <input type="text" class="form-control" id="apellido_materno" name="apellido_materno" value="{{ padre.apellido_materno|default:'' }}" maxlength="50" placeholder="Ej: López">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información de contacto -->
+                        <div class="section-header">
+                            <h5 class="mb-0"><i class="fas fa-phone me-2"></i>Información de Contacto</h5>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="fono" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="fono" name="fono" value="{{ padre.fono|default:'' }}" maxlength="15" placeholder="Ej: +56 9 1234 5678">
+                        </div>
+
+                        <!-- Información adicional -->
+                        <div class="section-header">
+                            <h5 class="mb-0"><i class="fas fa-info me-2"></i>Información Adicional</h5>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="ocupacion" class="form-label">Ocupación</label>
+                                    <input type="text" class="form-control" id="ocupacion" name="ocupacion" value="{{ padre.ocupacion|default:'' }}" maxlength="100" placeholder="Ej: Ingeniero, Profesora, etc.">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="escolaridad" class="form-label">Escolaridad</label>
+                                    <select class="form-select" id="escolaridad" name="escolaridad">
+                                        <option value="">Seleccione escolaridad</option>
+                                        <option value="Básica Incompleta" {% if padre.escolaridad == 'Básica Incompleta' %}selected{% endif %}>Básica Incompleta</option>
+                                        <option value="Básica Completa" {% if padre.escolaridad == 'Básica Completa' %}selected{% endif %}>Básica Completa</option>
+                                        <option value="Media Incompleta" {% if padre.escolaridad == 'Media Incompleta' %}selected{% endif %}>Media Incompleta</option>
+                                        <option value="Media Completa" {% if padre.escolaridad == 'Media Completa' %}selected{% endif %}>Media Completa</option>
+                                        <option value="Técnica" {% if padre.escolaridad == 'Técnica' %}selected{% endif %}>Técnica</option>
+                                        <option value="Universitaria Incompleta" {% if padre.escolaridad == 'Universitaria Incompleta' %}selected{% endif %}>Universitaria Incompleta</option>
+                                        <option value="Universitaria Completa" {% if padre.escolaridad == 'Universitaria Completa' %}selected{% endif %}>Universitaria Completa</option>
+                                        <option value="Postgrado" {% if padre.escolaridad == 'Postgrado' %}selected{% endif %}>Postgrado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="religion" class="form-label">Religión</label>
+                            <input type="text" class="form-control" id="religion" name="religion" value="{{ padre.religion|default:'' }}" maxlength="50" placeholder="Ej: Católica, Evangélica, etc.">
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'listar_padres' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-submit">
+                                <i class="fas fa-save me-2"></i>Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function selectParentType(isMother) {
+            // Remover selección anterior
+            document.querySelectorAll('.parent-type-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Seleccionar nueva opción
+            const selectedOption = isMother ? 
+                document.querySelector('.parent-type-option:nth-child(2)') : 
+                document.querySelector('.parent-type-option:nth-child(1)');
+            selectedOption.classList.add('selected');
+            
+            // Marcar radio button
+            const radioButton = isMother ? document.getElementById('madre') : document.getElementById('padre');
+            radioButton.checked = true;
+        }
+
+        // Formatear RUN mientras se escribe
+        document.getElementById('run').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^0-9kK]/g, '');
+            if (value.length > 1) {
+                value = value.slice(0, -1).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '-' + value.slice(-1);
+            }
+            e.target.value = value;
+        });
+
+        // Validación del formulario
+        document.getElementById('padreForm').addEventListener('submit', function(e) {
+            const alumnoEl = document.getElementById('alumno');
+            const alumno = alumnoEl.value;
+            const esMadre = document.querySelector('input[name="es_madre"]:checked');
+            const run = document.getElementById('run').value;
+            const nombre = document.getElementById('nombre').value;
+            const apellidoPaterno = document.getElementById('apellido_paterno').value;
+
+            if (!alumno && !alumnoEl.querySelector('option[selected]')) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Debe seleccionar un alumno.'
+                });
+                return;
+            }
+
+            if (!esMadre) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Debe seleccionar el tipo de padre/apoderado.'
+                });
+                return;
+            }
+
+            if (!run.trim()) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'El RUN es obligatorio.'
+                });
+                return;
+            }
+
+            if (!nombre.trim()) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'El nombre es obligatorio.'
+                });
+                return;
+            }
+
+            if (!apellidoPaterno.trim()) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'El apellido paterno es obligatorio.'
+                });
+                return;
+            }
+
+            // Confirmar modificación
+            e.preventDefault();
+            const tipoTexto = esMadre.value === 'True' ? 'madre' : 'padre';
+            Swal.fire({
+                title: 'Confirmar Modificación',
+                text: `¿Desea guardar los cambios realizados a ${tipoTexto} ${nombre} ${apellidoPaterno}?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#667eea',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, guardar cambios',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    e.target.submit();
+                }
+            });
+        });
+
+        // Mostrar mensajes de Django
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
+                    title: '{{ message.tags|title }}',
+                    text: '{{ message }}',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            {% endfor %}
+        {% endif %}
+    </script>
+</body>
+</html>

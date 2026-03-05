@@ -1,0 +1,721 @@
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		{% load static %}
+		<meta charset="UTF-8"/>
+		<title>Mi Perfil</title>
+		<link rel="icon" href="{% static "/imagenes/logo.PNG"%}"/>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.all.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.min.css">
+		
+		<script>
+			const botonCerrarSesion = () => {
+				Swal.fire({
+					title: '¿Esta Seguro?',
+					text: "Debera iniciar sesion nuevamente!",
+					icon: 'question',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Aceptar',
+					cancelButtonText: 'Cancelar'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						window.location.href = "/logout";
+					}
+				})
+			}
+		</script>
+		
+		<style>
+            body {
+                background: #ffffff;
+                min-height: 100vh;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                z-index: 1000;
+                overflow-x: hidden;
+            }
+			
+            .navbar-modern {
+                background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+                box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+                border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                z-index: 1100;
+            }
+			
+			.navbar-brand-modern {
+				font-weight: 600;
+				font-size: 1.4rem;
+				text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+				transition: all 0.3s ease;
+			}
+			
+			.navbar-brand-modern:hover {
+				transform: scale(1.05);
+			}
+			
+			.nav-link-modern {
+				color: white !important;
+				font-weight: 500;
+				font-size: 1rem;
+				padding: 12px 20px !important;
+				border-radius: 8px;
+				transition: all 0.3s ease;
+				margin: 0 2px;
+				border-left: none !important;
+				position: relative;
+			}
+			
+			.nav-link-modern:hover {
+				background: rgba(255, 255, 255, 0.2);
+				transform: translateY(-2px);
+				box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+				color: white !important;
+			}
+			
+			.nav-link-modern:active {
+				transform: translateY(0);
+			}
+			
+			.logo-container {
+				transition: all 0.3s ease;
+			}
+			
+			.logo-container:hover {
+				transform: scale(1.05);
+			}
+			.offcanvas .offcanvas-body.navbar-nav{
+				display:flex;
+				flex-direction: column;
+				flex-wrap: wrap;
+				height: calc(100vh - 140px);
+				align-content: flex-start;
+			}
+			
+			.content-container {
+				max-width: 1200px;
+				margin: 2rem auto;
+				padding: 0 1rem;
+			}
+			
+			.profile-container {
+				background: rgba(255, 255, 255, 0.95);
+				padding: 3rem;
+				border-radius: 20px;
+				box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+				backdrop-filter: blur(10px);
+				border: 1px solid rgba(255, 255, 255, 0.2);
+				margin-bottom: 3rem;
+			}
+			
+			.profile-title {
+				color: #2c3e50;
+				font-size: 2.5rem;
+				font-weight: 300;
+				margin-bottom: 2rem;
+				text-align: center;
+			}
+			
+			.profile-photo {
+				width: 150px;
+				height: 150px;
+				object-fit: cover;
+				border-radius: 50%;
+				border: 5px solid #667eea;
+				box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+				transition: all 0.3s ease;
+			}
+			
+			.profile-photo:hover {
+				transform: scale(1.05);
+				box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+			}
+			
+			.info-card {
+				background: rgba(255, 255, 255, 0.8);
+				border-radius: 15px;
+				padding: 1.5rem;
+				margin-bottom: 1.5rem;
+				border: 1px solid rgba(102, 126, 234, 0.2);
+				transition: all 0.3s ease;
+			}
+			
+			.info-card:hover {
+				transform: translateY(-3px);
+				box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+			}
+			
+			.info-label {
+				font-weight: 600;
+				color: #495057;
+				margin-bottom: 0.5rem;
+			}
+			
+			.info-value {
+				color: #2c3e50;
+				font-size: 1.1rem;
+			}
+			
+			.section-title {
+				color: #667eea;
+				font-size: 1.5rem;
+				font-weight: 600;
+				margin: 2rem 0 1rem 0;
+				border-bottom: 2px solid #667eea;
+				padding-bottom: 0.5rem;
+			}
+			
+			.badge-custom {
+				padding: 0.5rem 1rem;
+				font-size: 0.9rem;
+				border-radius: 20px;
+				margin: 0.2rem;
+			}
+			
+			.btn-modern {
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				border: none;
+				color: white;
+				padding: 12px 30px;
+				border-radius: 25px;
+				font-weight: 500;
+				transition: all 0.3s ease;
+				margin: 0.5rem;
+			}
+			
+			.btn-modern:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+				color: white;
+			}
+			
+			.navbar-toggler {
+				border: 2px solid rgba(255, 255, 255, 0.3);
+				border-radius: 8px;
+			}
+			
+			.navbar-toggler:focus {
+				box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+			}
+			
+			@media (max-width: 991px) {
+				.navbar-nav {
+					background: rgba(0, 0, 0, 0.1);
+					border-radius: 10px;
+					padding: 10px;
+					margin-top: 10px;
+				}
+			}
+			.navbar-modern {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1100;
+        }
+
+        .navbar-brand-modern {
+            font-weight: 600;
+            font-size: 1.4rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand-modern:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-link-modern {
+            color: white !important;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 12px 16px !important;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin: 0 2px;
+            border-left: none !important;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .nav-link-modern:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: white !important;
+        }
+
+        .nav-link-modern:active {
+            transform: translateY(0);
+        }
+
+        .offcanvas .offcanvas-body.navbar-nav {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            gap: 8px;
+            height: calc(100vh - 140px);
+            align-content: flex-start;
+        }
+
+        .offcanvas-end {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: var(--bs-offcanvas-width);
+            max-height: 80vh;
+            transform: translate(100%, -50%) !important;
+            border-radius: 12px;
+        }
+        .offcanvas-end.show {
+            transform: translate(-50%, -50%) !important;
+        }
+
+        .navbar-toggler {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+        }
+        @media (max-width: 991px) {
+            .navbar-nav {
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                padding: 10px;
+                margin-top: 10px;
+            }
+            
+            .user-info {
+                margin: 10px 0;
+                text-align: center;
+                font-size: 0.8rem;
+            }
+        }
+		</style>
+        <style>
+            .swal2-container{z-index:1200 !important;}
+            .offcanvas.offcanvas-end { right: 0; left: auto !important; top: 0; bottom: 0; height: 100vh; }
+            .offcanvas.offcanvas-end:not(.show) { transform: translateX(100%) !important; }
+            .offcanvas.offcanvas-end.show { transform: translateX(0) !important; }
+            .navbar-modern { background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important; box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3); border-bottom: 3px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); z-index: 1100; }
+            .navbar-brand-modern { font-weight: 600; font-size: 1.2rem; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; }
+            .nav-link-modern { color: white !important; font-weight: 500; font-size: 1rem; padding: 12px 16px !important; border-radius: 10px; transition: all 0.3s ease; margin: 0 2px; border-left: none !important; position: relative; display: flex; align-items: center; justify-content: flex-start; }
+            .nav-link-modern:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); color: white !important; }
+            .logo-container { transition: all 0.3s ease; }
+            .logo-container:hover { transform: scale(1.05); }
+            .offcanvas .offcanvas-body.navbar-nav { display: flex; flex-direction: column; flex-wrap: nowrap; gap: 8px; align-content: flex-start; }
+        </style>
+    </head>
+	<body style="overflow-x:hidden;">
+		{% if cargo == "DIRECTOR" %}
+
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_certificados' %}"><i class="fas fa-certificate me-2"></i>Certificados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-users me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_historial"><i class="fas fa-clock-rotate-left me-2"></i>Historial de Acciones</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% elif cargo == "PROFESOR" %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+					
+					
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% elif cargo == "ESTUDIANTE" or cargo == "ALUMNO" %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+					
+					
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% else %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_profesor"><i class="fas fa-user-plus me-2"></i>Registrar Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_asignaturas"><i class="fas fa-book me-2"></i>Registrar Asignaturas</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_horarios"><i class="fas fa-calendar-plus me-2"></i>Crear Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/listar_alumnos"><i class="fas fa-users me-2"></i>Listar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_alumno"><i class="fas fa-user-plus me-2"></i>Registrar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_atenciones' %}"><i class="fas fa-briefcase-medical me-2"></i>Atenciones</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-user-group me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_certificados' %}"><i class="fas fa-certificate me-2"></i>Certificados</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% endif %}
+		
+		<!-- Contenido Principal -->
+		<div class="content-container">
+			<div class="profile-container">
+				{% if messages %}
+					{% for message in messages %}
+						<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+							{{ message }}
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					{% endfor %}
+				{% endif %}
+				<h1 class="profile-title"><i class="bi bi-person-circle"></i> Mi Perfil</h1>
+				
+				<div class="row">
+					<div class="col-md-4 text-center">
+						{% if es_profesor and profesor.Foto %}
+							<img src="{{ profesor.Foto.url }}" alt="Foto de perfil" class="profile-photo">
+						{% elif es_estudiante and alumno.Foto %}
+							<img src="{{ alumno.Foto.url }}" alt="Foto de perfil" class="profile-photo">
+						{% else %}
+							<img src="{% static '/imagenes/default-profile.png' %}" alt="Foto de perfil" class="profile-photo">
+						{% endif %}
+					</div>
+					
+					<div class="col-md-8">
+						{% if es_profesor %}
+							<div class="info-card">
+								<h3 class="text-primary mb-3">{{ profesor.nombre }} {{ profesor.apellido }}</h3>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="info-label">RUT:</div>
+										<div class="info-value">{{ profesor.rut }}</div>
+									</div>
+									<div class="col-md-6">
+										<div class="info-label">Email:</div>
+										<div class="info-value">{{ profesor.email }}</div>
+									</div>
+								</div>
+								<div class="row mt-3">
+									<div class="col-md-6">
+										<div class="info-label">Nivel:</div>
+										<div class="info-value">{{ profesor.nivel }}</div>
+									</div>
+									<div class="col-md-6">
+										<div class="info-label">Cargo:</div>
+                                        <div class="info-value"><span class="badge bg-primary badge-custom">{{ cargo }}</span></div>
+									</div>
+								</div>
+							</div>
+							
+							{% if especialidades %}
+								<div class="info-card">
+									<h5 class="section-title">Especialidades</h5>
+									<div class="mt-2">
+										{% for esp in especialidades %}
+											<span class="badge bg-info badge-custom">{{ esp.nombre }}</span>
+										{% endfor %}
+									</div>
+								</div>
+							{% endif %}
+							
+						{% elif es_estudiante %}
+							<div class="info-card">
+								<h3 class="text-success mb-3">{{ alumno.nombre }} {{ alumno.apellido_paterno }} {{ alumno.apellido_materno }}</h3>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="info-label">Matrícula:</div>
+										<div class="info-value">{{ alumno.matricula }}</div>
+									</div>
+									<div class="col-md-6">
+										<div class="info-label">RUN:</div>
+										<div class="info-value">{{ alumno.run }}</div>
+									</div>
+								</div>
+								<div class="row mt-3">
+									<div class="col-md-6">
+										<div class="info-label">Fecha de Nacimiento:</div>
+										<div class="info-value">{{ alumno.fecha_nacimiento|date:"d/m/Y" }}</div>
+									</div>
+									<div class="col-md-6">
+										<div class="info-label">Edad:</div>
+										<div class="info-value">{{ alumno.edad }} años</div>
+									</div>
+								</div>
+								<div class="row mt-3">
+									<div class="col-md-6">
+										<div class="info-label">Dirección:</div>
+										<div class="info-value">{{ alumno.direccion }}</div>
+									</div>
+									<div class="col-md-6">
+										<div class="info-label">Comuna:</div>
+										<div class="info-value">{{ alumno.comuna }}</div>
+									</div>
+								</div>
+								<div class="row mt-3">
+									<div class="col-md-6">
+										<div class="info-label">Cargo:</div>
+                                        <div class="info-value"><span class="badge bg-success badge-custom">{{ cargo }}</span></div>
+									</div>
+									<div class="col-md-6">
+										<div class="info-label">Curso:</div>
+										<div class="info-value">{{ alumno.curso }}</div>
+									</div>
+								</div>
+								
+							</div>
+							
+							<!-- Información de Padre -->
+							{% if padre %}
+							<div class="info-card">
+								<h5 class="section-title"><i class="bi bi-person-fill"></i> Información del Padre</h5>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="info-label">Nombre:</div>
+										<div class="info-value">{{ padre.nombre }} {{ padre.apellido_paterno }} {{ padre.apellido_materno }}</div>
+									</div>
+									<div class="col-md-6">
+										<div class="info-label">RUN:</div>
+										<div class="info-value">{{ padre.run }}</div>
+									</div>
+								</div>
+								<div class="row mt-3">
+									<div class="col-md-6">
+										<div class="info-label">Teléfono:</div>
+										<div class="info-value">{{ padre.fono }}</div>
+									</div>
+									<div class="col-md-6">
+										<div class="info-label">Edad:</div>
+										<div class="info-value">{{ padre.edad }} años</div>
+									</div>
+								</div>
+								<div class="row mt-3">
+									<div class="col-md-6">
+										<div class="info-label">Escolaridad:</div>
+										<div class="info-value">{{ padre.escolaridad }}</div>
+									</div>
+									<div class="col-md-6">
+										<div class="info-label">Ocupación:</div>
+										<div class="info-value">{{ padre.ocupacion }}</div>
+									</div>
+								</div>
+								<div class="row mt-3">
+									<div class="col-md-6">
+										<div class="info-label">Religión:</div>
+										<div class="info-value">{{ padre.religion }}</div>
+									</div>
+								</div>
+							</div>
+							{% endif %}
+							
+							<!-- Información de Apoderado -->
+							{% if apoderado %}
+							<div class="info-card">
+								<h5 class="section-title"><i class="bi bi-person-check-fill"></i> Información del Apoderado</h5>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="info-label">Nombre:</div>
+										<div class="info-value">{{ apoderado.nombre }} {{ apoderado.apellido_paterno }} {{ apoderado.apellido_materno }}</div>
+									</div>
+									<div class="col-md-6">
+										<div class="info-label">RUN:</div>
+										<div class="info-value">{{ apoderado.run }}</div>
+									</div>
+								</div>
+								<div class="row mt-3">
+									<div class="col-md-6">
+										<div class="info-label">Teléfono:</div>
+										<div class="info-value">{{ apoderado.fono }}</div>
+									</div>
+									<div class="col-md-6">
+										<div class="info-label">Edad:</div>
+										<div class="info-value">{{ apoderado.edad }} años</div>
+									</div>
+								</div>
+								<div class="row mt-3">
+									<div class="col-md-6">
+										<div class="info-label">Escolaridad:</div>
+										<div class="info-value">{{ apoderado.escolaridad }}</div>
+									</div>
+									<div class="col-md-6">
+										<div class="info-label">Ocupación:</div>
+										<div class="info-value">{{ apoderado.ocupacion }}</div>
+									</div>
+								</div>
+								<div class="row mt-3">
+									<div class="col-md-6">
+										<div class="info-label">Religión:</div>
+										<div class="info-value">{{ apoderado.religion }}</div>
+									</div>
+								</div>
+							</div>
+							{% endif %}
+							
+						{% else %}
+							<div class="info-card">
+								<h3 class="text-secondary mb-3">{{ user.first_name }} {{ user.last_name }}</h3>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="info-label">Nombre de usuario:</div>
+										<div class="info-value">{{ user.username }}</div>
+									</div>
+									<div class="col-md-6">
+										<div class="info-label">Email:</div>
+										<div class="info-value">{{ user.email }}</div>
+									</div>
+								</div>
+								<div class="row mt-3">
+									<div class="col-md-6">
+										<div class="info-label">Fecha de registro:</div>
+										<div class="info-value">{{ user.date_joined|date:"d/m/Y" }}</div>
+									</div>
+									<div class="col-md-6">
+										<div class="info-label">Cargo:</div>
+                                        <div class="info-value"><span class="badge bg-secondary badge-custom">{{ cargo }}</span></div>
+									</div>
+								</div>
+							</div>
+						{% endif %}
+					</div>
+				</div>
+				
+				<div class="text-center mt-4">
+					<a href="/menu" class="btn btn-modern"><i class="bi bi-house-fill"></i> Volver al Inicio</a>
+                    <button type="button" class="btn btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#modalCambiarPassword">
+                        <i class="bi bi-key-fill"></i> Cambiar Contraseña
+                    </button>
+				</div>
+			</div>
+		</div>
+		
+        <!-- Modal Cambiar Contraseña -->
+        <div class="modal fade" id="modalCambiarPassword" tabindex="-1" aria-labelledby="modalCambiarPasswordLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalCambiarPasswordLabel">Cambiar Contraseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <form action="{% url 'cambiar_password' %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label for="password_actual" class="form-label">Contraseña Actual</label>
+                    <input type="password" class="form-control" id="password_actual" name="password_actual" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="password_nueva" class="form-label">Nueva Contraseña</label>
+                    <input type="password" class="form-control" id="password_nueva" name="password_nueva" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="password_confirmacion" class="form-label">Confirmar Nueva Contraseña</label>
+                    <input type="password" class="form-control" id="password_confirmacion" name="password_confirmacion" required>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+		<!-- Bootstrap JS -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+	</body>
+</html>

@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <link rel="icon" href="{% static "/imagenes/logo.PNG"%}"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Alumno</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+		
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background: #ffffff;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding: 30px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .section-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0 15px 0;
+            text-align: center;
+            font-weight: 600;
+        }
+        .form-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+        }
+        .form-control, .form-select {
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .form-control::placeholder {
+            color: #9aa0a6;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.18);
+            transform: translateY(-2px);
+            background: #fff;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 12px 32px;
+            border-radius: 28px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.35);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 10px 24px rgba(102, 126, 234, 0.45);
+        }
+        .btn-secondary {
+            background: linear-gradient(45deg, #6c757d, #495057);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+        .btn-add-inline {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        .btn-remove-inline {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.8em;
+        }
+        .inline-form {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .inline-header {
+            background: #e9ecef;
+            margin: -15px -15px 15px -15px;
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            font-weight: 600;
+            color: #495057;
+        }
+        .row {
+            margin-bottom: 15px;
+        }
+        .required {
+            color: #dc3545;
+        }
+        .form-check {
+            margin-bottom: 15px;
+        }
+        .form-check-input {
+            margin-top: 0.3em;
+        }
+        .alert {
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .progress {
+            height: 6px;
+            border-radius: 3px;
+            margin-bottom: 20px;
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .step.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+        .step.completed {
+            background: #28a745;
+            color: white;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            background-color: #fff;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        .dropdown-item {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+        .dropdown-item:active {
+            background-color: #007bff;
+            color: white;
+        }
+        .navbar-modern {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1100;
+        }
+
+        .navbar-brand-modern {
+            font-weight: 600;
+            font-size: 1.4rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand-modern:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-link-modern {
+            color: white !important;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 12px 16px !important;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin: 0 2px;
+            border-left: none !important;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .nav-link-modern:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: white !important;
+        }
+
+        .nav-link-modern:active {
+            transform: translateY(0);
+        }
+
+        .offcanvas .offcanvas-body.navbar-nav {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            gap: 8px;
+            height: calc(100vh - 140px);
+            align-content: flex-start;
+        }
+
+        .offcanvas.offcanvas-end {
+            right: 0;
+            left: auto !important;
+            
+            max-height: 80vh;
+            border-radius: 12px;
+        }
+        .offcanvas.offcanvas-end:not(.show) {
+            transform: translateX(100%) !important;
+        }
+        .offcanvas.offcanvas-end.show {
+            transform: translateX(0) !important;
+        }
+
+        .navbar-toggler {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+        }
+        @media (max-width: 991px) {
+            .navbar-nav {
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                padding: 10px;
+                margin-top: 10px;
+            }
+            
+            .user-info {
+                margin: 10px 0;
+                text-align: center;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body style="overflow-x:hidden;">
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_profesor"><i class="fas fa-user-plus me-2"></i>Registrar Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_asignaturas"><i class="fas fa-book me-2"></i>Registrar Asignaturas</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_horarios"><i class="fas fa-calendar-plus me-2"></i>Crear Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/listar_alumnos"><i class="fas fa-users me-2"></i>Listar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_alumno"><i class="fas fa-user-plus me-2"></i>Registrar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_atenciones' %}"><i class="fas fa-briefcase-medical me-2"></i>Atenciones</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-user-group me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_certificados' %}"><i class="fas fa-certificate me-2"></i>Certificados</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-user-graduate"></i> Registro de Alumno</h1>
+            <p class="text-muted">Complete la información del estudiante y sus responsables</p>
+        </div>
+
+        <!-- Indicador de pasos -->
+        <div class="step-indicator">
+            <div class="step active" id="step1">1</div>
+            <div class="step" id="step2">2</div>
+            <div class="step" id="step3">3</div>
+        </div>
+
+        <!-- Barra de progreso -->
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 33%" id="progressBar"></div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <i class="fas fa-info-circle"></i> {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data" id="alumnoForm">
+            {% csrf_token %}
+            
+            <!-- Sección 1: Datos del Alumno -->
+            <div class="form-step" id="section1">
+                <div class="section-header">
+                    <i class="fas fa-user"></i> Datos del Alumno
+                </div>
+                <div class="form-section">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="form-label">Matrícula asignada</label>
+                            <input type="text" class="form-control" value="{{ next_matricula }}" disabled>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Curso <span class="required">*</span></label>
+                            <select name="curso" class="form-select" required>
+                                <option value="">Seleccionar curso</option>
+                                <option value="PREKINDER">PREKINDER</option>
+                                <option value="KINDER">KINDER</option>
+                                <option value="PRIMERO BASICO">PRIMERO BASICO</option>
+                                <option value="SEGUNDO BASICO">SEGUNDO BASICO</option>
+                                <option value="TERCERO BASICO">TERCERO BASICO</option>
+                                <option value="CUARTO BASICO">CUARTO BASICO</option>
+                                <option value="QUINTO BASICO">QUINTO BASICO</option>
+                                <option value="SEXTO BASICO">SEXTO BASICO</option>
+                                <option value="SEPTIMO BASICO">SEPTIMO BASICO</option>
+                                <option value="OCTAVO BASICO">OCTAVO BASICO</option>
+                                <option value="PRIMERO MEDIO">PRIMERO MEDIO</option>
+                                <option value="SEGUNDO MEDIO">SEGUNDO MEDIO</option>
+                                <option value="TERCERO MEDIO">TERCERO MEDIO</option>
+                                <option value="CUARTO MEDIO">CUARTO MEDIO</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label">RUN <span class="required">*</span></label>
+                            <input type="text" name="run" class="form-control" placeholder="12.345.678-9" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" placeholder="correo@ejemplo.com">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Nombres <span class="required">*</span></label>
+                            <input type="text" name="nombre" class="form-control" placeholder="Nombres del alumno" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Apellido Paterno <span class="required">*</span></label>
+                            <input type="text" name="apellido_paterno" class="form-control" placeholder="Apellido paterno" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Apellido Materno <span class="required">*</span></label>
+                            <input type="text" name="apellido_materno" class="form-control" placeholder="Apellido materno" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha de Nacimiento <span class="required">*</span></label>
+                            <input type="date" name="fecha_nacimiento" class="form-control" id="fechaNacimiento" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Edad</label>
+                            <input type="number" name="edad" class="form-control" id="edad" placeholder="Se calcula automáticamente" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Dirección</label>
+                            <input type="text" name="direccion" class="form-control" placeholder="Dirección completa">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Comuna</label>
+                            <div class="position-relative">
+                                <input type="text" name="comuna" id="comunaInput" class="form-control" placeholder="Escribir o seleccionar comuna" autocomplete="off">
+                                <div id="comunaDropdown" class="dropdown-menu w-100" style="max-height: 200px; overflow-y: auto; display: none;">
+                                    <div class="dropdown-item" data-value="Antofagasta">Antofagasta</div>
+                                    <div class="dropdown-item" data-value="Buin">Buin</div>
+                                    <div class="dropdown-item" data-value="Calama">Calama</div>
+                                    <div class="dropdown-item" data-value="Chépica">Chépica</div>
+                                    <div class="dropdown-item" data-value="Chimbarongo">Chimbarongo</div>
+                                    <div class="dropdown-item" data-value="Codegua">Codegua</div>
+                                    <div class="dropdown-item" data-value="Coinco">Coinco</div>
+                                    <div class="dropdown-item" data-value="Coltauco">Coltauco</div>
+                                    <div class="dropdown-item" data-value="Doñihue">Doñihue</div>
+                                    <div class="dropdown-item" data-value="Graneros">Graneros</div>
+                                    <div class="dropdown-item" data-value="La Estrella">La Estrella</div>
+                                    <div class="dropdown-item" data-value="Las Cabras">Las Cabras</div>
+                                    <div class="dropdown-item" data-value="Litueche">Litueche</div>
+                                    <div class="dropdown-item" data-value="Lolol">Lolol</div>
+                                    <div class="dropdown-item" data-value="Machalí">Machalí</div>
+                                    <div class="dropdown-item" data-value="Malloa">Malloa</div>
+                                    <div class="dropdown-item" data-value="Marchihue">Marchihue</div>
+                                    <div class="dropdown-item" data-value="Mostazal">Mostazal</div>
+                                    <div class="dropdown-item" data-value="Nancagua">Nancagua</div>
+                                    <div class="dropdown-item" data-value="Navidad">Navidad</div>
+                                    <div class="dropdown-item" data-value="Olivar">Olivar</div>
+                                    <div class="dropdown-item" data-value="Palmilla">Palmilla</div>
+                                    <div class="dropdown-item" data-value="Paredones">Paredones</div>
+                                    <div class="dropdown-item" data-value="Peralillo">Peralillo</div>
+                                    <div class="dropdown-item" data-value="Peumo">Peumo</div>
+                                    <div class="dropdown-item" data-value="Pichidegua">Pichidegua</div>
+                                    <div class="dropdown-item" data-value="Pichilemu">Pichilemu</div>
+                                    <div class="dropdown-item" data-value="Placilla">Placilla</div>
+                                    <div class="dropdown-item" data-value="Pumanque">Pumanque</div>
+                                    <div class="dropdown-item" data-value="Quinta de Tilcoco">Quinta de Tilcoco</div>
+                                    <div class="dropdown-item" data-value="Rancagua">Rancagua</div>
+                                    <div class="dropdown-item" data-value="Rengo">Rengo</div>
+                                    <div class="dropdown-item" data-value="Requínoa">Requínoa</div>
+                                    <div class="dropdown-item" data-value="San Fernando">San Fernando</div>
+                                    <div class="dropdown-item" data-value="San Vicente">San Vicente</div>
+                                    <div class="dropdown-item" data-value="Santa Cruz">Santa Cruz</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Procedencia</label>
+                            <input type="text" name="procedencia" class="form-control" placeholder="Establecimiento anterior">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Curso Repetido</label>
+                            <select name="curso_repetido" class="form-select">
+                                <option value="NO APLICA">NO APLICA</option>
+                                <option value="PREKINDER">PREKINDER</option>
+                                <option value="KINDER">KINDER</option>
+                                <option value="PRIMERO BASICO">PRIMERO BASICO</option>
+                                <option value="SEGUNDO BASICO">SEGUNDO BASICO</option>
+                                <option value="TERCERO BASICO">TERCERO BASICO</option>
+                                <option value="CUARTO BASICO">CUARTO BASICO</option>
+                                <option value="QUINTO BASICO">QUINTO BASICO</option>
+                                <option value="SEXTO BASICO">SEXTO BASICO</option>
+                                <option value="SEPTIMO BASICO">SEPTIMO BASICO</option>
+                                <option value="OCTAVO BASICO">OCTAVO BASICO</option>
+                                <option value="PRIMERO MEDIO">PRIMERO MEDIO</option>
+                                <option value="SEGUNDO MEDIO">SEGUNDO MEDIO</option>
+                                <option value="TERCERO MEDIO">TERCERO MEDIO</option>
+                                <option value="CUARTO MEDIO">CUARTO MEDIO</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Con Quién Vive</label>
+                            <input type="text" name="con_quien_vive" class="form-control" placeholder="Con quién vive el alumno">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Enfermedad</label>
+                            <input type="text" name="enfermedad" class="form-control" placeholder="Enfermedades o condiciones médicas">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Previsión</label>
+                            <select name="prevision" class="form-select">
+                                <option value="Ninguna">Ninguna</option>
+                                <option value="Isapre">Isapre</option>
+                                <option value="Fonasa">Fonasa</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Letra FONASA</label>
+                            <select name="letra_fonasa" class="form-select">
+                                <option value="NO APLICA">NO APLICA</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Siguiente <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Sección 2: Datos de los Padres -->
+            <div class="form-step" id="section2" style="display: none;">
+                <div class="section-header">
+                    <i class="fas fa-users"></i> Datos de los Padres
+                </div>
+                <div class="form-section">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Información de los Padres</h5>
+                        <button type="button" class="btn btn-add-inline" onclick="addPadre()">
+                            <i class="fas fa-plus"></i> Agregar Padre/Madre
+                        </button>
+                    </div>
+                    <div id="padres-container">
+                        <!-- Los formularios de padres se agregarán aquí dinámicamente -->
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Anterior</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Siguiente <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Sección 3: Datos de los Apoderados -->
+            <div class="form-step" id="section3" style="display: none;">
+                <div class="section-header">
+                    <i class="fas fa-user-tie"></i> Datos de los Apoderados
+                </div>
+                <div class="form-section">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Información de los Apoderados</h5>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-outline-secondary" onclick="copyPadreToApoderado(1,1)">
+                                <i class="fas fa-copy"></i> Copiar datos del Padre
+                            </button>
+                            <button type="button" class="btn btn-add-inline" onclick="addApoderado()">
+                                <i class="fas fa-plus"></i> Agregar Apoderado
+                            </button>
+                        </div>
+                    </div>
+                    <div id="apoderados-container">
+                        <!-- Los formularios de apoderados se agregarán aquí dinámicamente -->
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Anterior</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Registrar Alumno
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div class="text-center mt-4">
+            <a href="/menu" class="btn btn-secondary">
+                <i class="fas fa-home"></i> Volver al Menú Principal
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentStep = 1;
+        let padreCount = 0;
+        let apoderadoCount = 0;
+
+        // Navegación entre pasos
+        function nextStep() {
+            if (validateCurrentStep()) {
+                document.getElementById(`section${currentStep}`).style.display = 'none';
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                document.getElementById(`step${currentStep}`).classList.add('completed');
+                
+                currentStep++;
+                
+                document.getElementById(`section${currentStep}`).style.display = 'block';
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                
+                updateProgressBar();
+            }
+        }
+
+        function prevStep() {
+            document.getElementById(`section${currentStep}`).style.display = 'none';
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            
+            currentStep--;
+            
+            document.getElementById(`section${currentStep}`).style.display = 'block';
+            document.getElementById(`step${currentStep}`).classList.remove('completed');
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const progress = (currentStep / 3) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function validateCurrentStep() {
+            const currentSection = document.getElementById(`section${currentStep}`);
+            const requiredFields = currentSection.querySelectorAll('[required]');
+            
+            for (let field of requiredFields) {
+                if (!field.value.trim()) {
+                    field.focus();
+                    field.classList.add('is-invalid');
+                    return false;
+                }
+                field.classList.remove('is-invalid');
+            }
+            return true;
+        }
+
+        // Agregar formulario de padre
+        function addPadre() {
+            if (padreCount >= 2) {
+                alert('Solo se pueden agregar máximo 2 padres');
+                return;
+            }
+            
+            padreCount++;
+            const container = document.getElementById('padres-container');
+            const padreForm = createPadreForm(padreCount);
+            container.appendChild(padreForm);
+        }
+
+        function createPadreForm(index) {
+            const div = document.createElement('div');
+            div.className = 'inline-form';
+            div.id = `padre-${index}`;
+            
+            div.innerHTML = `
+                <div class="inline-header">
+                    <i class="fas fa-user"></i> Padre/Madre ${index}
+                    <button type="button" class="btn btn-remove-inline float-end" onclick="removePadre(${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" name="padre_${index}_es_madre" id="padre_${index}_es_madre">
+                    <label class="form-check-label" for="padre_${index}_es_madre">
+                        Es madre
+                    </label>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">RUN</label>
+                        <input type="text" name="padre_${index}_run" class="form-control" placeholder="12.345.678-9">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Nombres</label>
+                        <input type="text" name="padre_${index}_nombre" class="form-control" placeholder="Nombres">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Apellido Paterno</label>
+                        <input type="text" name="padre_${index}_apellido_paterno" class="form-control" placeholder="Apellido paterno">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Apellido Materno</label>
+                        <input type="text" name="padre_${index}_apellido_materno" class="form-control" placeholder="Apellido materno">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label">Teléfono</label>
+                        <input type="text" name="padre_${index}_fono" class="form-control" placeholder="912345678">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Escolaridad</label>
+                        <select name="padre_${index}_escolaridad" class="form-select">
+                            <option value="">Seleccionar</option>
+                            <option value="SIN ESTUDIOS">SIN ESTUDIOS</option>
+                            <option value="BASICA INCOMPLETA">BASICA INCOMPLETA</option>
+                            <option value="BASICA COMPLETA">BASICA COMPLETA</option>
+                            <option value="MEDIA INCOMPLETA">MEDIA INCOMPLETA</option>
+                            <option value="MEDIA COMPLETA">MEDIA COMPLETA</option>
+                            <option value="ESTUDIOS SUPERIORES INCOMPLETA">ESTUDIOS SUPERIORES INCOMPLETA</option>
+                            <option value="ESTUDIOS SUPERIORES COMPLETA">ESTUDIOS SUPERIORES COMPLETA</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Edad</label>
+                        <input type="number" name="padre_${index}_edad" class="form-control" placeholder="Edad">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Ocupación</label>
+                        <input type="text" name="padre_${index}_ocupacion" class="form-control" placeholder="Ocupación">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Religión</label>
+                        <input type="text" name="padre_${index}_religion" class="form-control" placeholder="Religión">
+                    </div>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        function removePadre(index) {
+            const element = document.getElementById(`padre-${index}`);
+            if (element) {
+                element.remove();
+                padreCount--;
+            }
+        }
+
+        // Agregar formulario de apoderado
+        function addApoderado() {
+            if (apoderadoCount >= 2) {
+                alert('Solo se pueden agregar máximo 2 apoderados');
+                return;
+            }
+            
+            apoderadoCount++;
+            const container = document.getElementById('apoderados-container');
+            const apoderadoForm = createApoderadoForm(apoderadoCount);
+            container.appendChild(apoderadoForm);
+        }
+
+        function createApoderadoForm(index) {
+            const div = document.createElement('div');
+            div.className = 'inline-form';
+            div.id = `apoderado-${index}`;
+            
+            div.innerHTML = `
+                <div class="inline-header">
+                    <i class="fas fa-user-tie"></i> Apoderado ${index}
+                    <button type="button" class="btn btn-remove-inline float-end" onclick="removeApoderado(${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">RUN</label>
+                        <input type="text" name="apoderado_${index}_run" class="form-control" placeholder="12.345.678-9">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Nombres</label>
+                        <input type="text" name="apoderado_${index}_nombre" class="form-control" placeholder="Nombres">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Apellido Paterno</label>
+                        <input type="text" name="apoderado_${index}_apellido_paterno" class="form-control" placeholder="Apellido paterno">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Apellido Materno</label>
+                        <input type="text" name="apoderado_${index}_apellido_materno" class="form-control" placeholder="Apellido materno">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label">Teléfono</label>
+                        <input type="text" name="apoderado_${index}_fono" class="form-control" placeholder="912345678">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Escolaridad</label>
+                        <select name="apoderado_${index}_escolaridad" class="form-select">
+                            <option value="">Seleccionar</option>
+                            <option value="SIN ESTUDIOS">SIN ESTUDIOS</option>
+                            <option value="BASICA INCOMPLETA">BASICA INCOMPLETA</option>
+                            <option value="BASICA COMPLETA">BASICA COMPLETA</option>
+                            <option value="MEDIA INCOMPLETA">MEDIA INCOMPLETA</option>
+                            <option value="MEDIA COMPLETA">MEDIA COMPLETA</option>
+                            <option value="ESTUDIOS SUPERIORES INCOMPLETA">ESTUDIOS SUPERIORES INCOMPLETA</option>
+                            <option value="ESTUDIOS SUPERIORES COMPLETA">ESTUDIOS SUPERIORES COMPLETA</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Edad</label>
+                        <input type="number" name="apoderado_${index}_edad" class="form-control" placeholder="Edad">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Ocupación</label>
+                        <input type="text" name="apoderado_${index}_ocupacion" class="form-control" placeholder="Ocupación">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Religión</label>
+                        <input type="text" name="apoderado_${index}_religion" class="form-control" placeholder="Religión">
+                    </div>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        function removeApoderado(index) {
+            const element = document.getElementById(`apoderado-${index}`);
+            if (element) {
+                element.remove();
+                apoderadoCount--;
+            }
+        }
+
+        function copyPadreToApoderado(pIndex, aIndex) {
+            const fields = ['run','nombre','apellido_paterno','apellido_materno','fono','escolaridad','edad','ocupacion','religion'];
+            fields.forEach(f => {
+                const p = document.querySelector(`[name="padre_${pIndex}_${f}"]`);
+                const a = document.querySelector(`[name="apoderado_${aIndex}_${f}"]`);
+                if (p && a) {
+                    a.value = p.value;
+                }
+            });
+        }
+
+        // Inicializar con un padre y un apoderado por defecto
+        document.addEventListener('DOMContentLoaded', function() {
+            addPadre();
+            addApoderado();
+            setupComunaAutocomplete();
+        });
+
+        // Generar número de matrícula automático
+        
+
+        // Configurar autocompletado para Comuna
+        function setupComunaAutocomplete() {
+            const input = document.getElementById('comunaInput');
+            const dropdown = document.getElementById('comunaDropdown');
+            const items = dropdown.querySelectorAll('.dropdown-item');
+
+            input.addEventListener('input', function() {
+                const filter = this.value.toLowerCase();
+                let hasVisibleItems = false;
+
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(filter)) {
+                        item.style.display = 'block';
+                        hasVisibleItems = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                dropdown.style.display = hasVisibleItems && filter ? 'block' : 'none';
+            });
+
+            input.addEventListener('focus', function() {
+                if (this.value) {
+                    dropdown.style.display = 'block';
+                }
+            });
+
+            items.forEach(item => {
+                item.addEventListener('click', function() {
+                    input.value = this.getAttribute('data-value');
+                    dropdown.style.display = 'none';
+                });
+            });
+
+            // Cerrar dropdown al hacer clic fuera
+            document.addEventListener('click', function(e) {
+                if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+        }
+
+        // Validación del formulario
+        document.getElementById('alumnoForm').addEventListener('submit', function(e) {
+            if (!validateCurrentStep()) {
+                e.preventDefault();
+            }
+        });
+
+        // Formatear RUN automáticamente
+        document.addEventListener('input', function(e) {
+            if (e.target.name && (e.target.name.includes('run') || e.target.name === 'run')) {
+                let value = e.target.value.replace(/[^0-9kK]/g, '');
+                if (value.length > 1) {
+                    value = value.slice(0, -1) + '-' + value.slice(-1);
+                }
+                if (value.length > 4) {
+                    value = value.slice(0, -5) + '.' + value.slice(-5);
+                }
+                if (value.length > 8) {
+                    value = value.slice(0, -9) + '.' + value.slice(-9);
+                }
+                e.target.value = value;
+            }
+        });
+
+        // Calcular edad automáticamente
+        document.getElementById('fechaNacimiento').addEventListener('change', function() {
+            const fechaNacimiento = new Date(this.value);
+            const hoy = new Date();
+            
+            if (fechaNacimiento && fechaNacimiento <= hoy) {
+                let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+                const mesActual = hoy.getMonth();
+                const mesNacimiento = fechaNacimiento.getMonth();
+                
+                // Ajustar si aún no ha cumplido años este año
+                if (mesActual < mesNacimiento || (mesActual === mesNacimiento && hoy.getDate() < fechaNacimiento.getDate())) {
+                    edad--;
+                }
+                
+                document.getElementById('edad').value = edad;
+            } else {
+                document.getElementById('edad').value = '';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <link rel="icon" href="{% static "/imagenes/logo.PNG"%}"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .card-header {
+            background: linear-gradient(135deg, #6f42c1 0%, #e83e8c 100%);
+            color: white;
+        }
+        .table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        .btn-action {
+            margin: 0 2px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        .badge-status {
+            font-size: 0.75rem;
+        }
+        .search-container {
+            background-color: #f8f9fa;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .table-responsive {
+            border-radius: 0.5rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .archivo-link {
+            color: #6f42c1;
+            text-decoration: none;
+        }
+        .archivo-link:hover {
+            color: #5a2d91;
+            text-decoration: underline;
+        }
+        .fecha-planificada {
+            font-weight: 600;
+        }
+        .fecha-pasada {
+            color: #dc3545;
+        }
+        .fecha-proxima {
+            color: #198754;
+        }
+        .fecha-hoy {
+            color: #fd7e14;
+            font-weight: bold;
+        }
+        .comentarios-preview {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .acuerdos-preview {
+            max-width: 250px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .navbar-modern {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1100;
+        }
+
+        .navbar-brand-modern {
+            font-weight: 600;
+            font-size: 1.4rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand-modern:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-link-modern {
+            color: white !important;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 12px 16px !important;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin: 0 2px;
+            border-left: none !important;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .nav-link-modern:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: white !important;
+        }
+
+        .nav-link-modern:active {
+            transform: translateY(0);
+        }
+
+        .offcanvas .offcanvas-body.navbar-nav {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            gap: 8px;
+            height: calc(100vh - 140px);
+            align-content: flex-start;
+        }
+
+        .offcanvas-end {
+            position: fixed;
+            top: 50%;
+            left: 66.5%;
+            width: var(--bs-offcanvas-width);
+            max-height: 80vh;
+            transform: translate(100%) !important;
+            border-radius: 12px;
+        }
+
+        .navbar-toggler {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+        }
+        @media (max-width: 991px) {
+            .navbar-nav {
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                padding: 10px;
+                margin-top: 10px;
+            }
+            
+            .user-info {
+                margin: 10px 0;
+                text-align: center;
+                font-size: 0.8rem;
+            }
+        }
+        body {
+            background: #ffffff;}
+    </style>
+</head>
+<body style="overflow-x:hidden;">
+    {% if cargo == "DIRECTOR" %}
+
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_certificados' %}"><i class="fas fa-certificate me-2"></i>Certificados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-users me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_historial"><i class="fas fa-clock-rotate-left me-2"></i>Historial de Acciones</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% elif cargo == "PROFESOR" %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+					
+					{% if datpro %}
+						<div class="user-info text-white" style="margin-right:20px; font-size:0.9rem;">
+							<div><strong>Profesor:</strong> {{ datpro.0.nombre }} {{ datpro.0.apellido }}</div>
+							<div><strong>RUT:</strong> {{ datpro.0.rut }}</div>
+						</div>
+					{% endif %}
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% elif cargo == "ESTUDIANTE" %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+					
+					{% if datest %}
+					<div class="user-info text-white" style="margin-right:20px; font-size:0.9rem;">
+						<div><strong>Alumno:</strong> {{ datest.0.nombre }} {{ datest.0.apellido_paterno }}</div>
+						<div><strong>Curso:</strong> {{ datest.0.curso }}</div>
+						<div><strong>RUN:</strong> {{ datest.0.run }}</div>
+					</div>
+					{% endif %}
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% else %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_profesor"><i class="fas fa-user-plus me-2"></i>Registrar Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_asignaturas"><i class="fas fa-book me-2"></i>Registrar Asignaturas</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_horarios"><i class="fas fa-calendar-plus me-2"></i>Crear Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/listar_alumnos"><i class="fas fa-users me-2"></i>Listar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_alumno"><i class="fas fa-user-plus me-2"></i>Registrar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_atenciones' %}"><i class="fas fa-briefcase-medical me-2"></i>Atenciones</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-user-group me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% endif %}
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0">
+                                <i class="fas fa-users me-2"></i>{{ titulo }}
+                            </h4>
+                            <div>
+                                <span class="badge bg-light text-dark me-2">Usuario: {{ nomUsuario }}</span>
+                                <span class="badge bg-secondary">{{ cargo }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Barra de búsqueda y filtros -->
+                        <div class="search-container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-search"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="searchInput" 
+                                               placeholder="Buscar por comentarios, acuerdos o administrativo...">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-select" id="filterFecha">
+                                        <option value="">Todas las fechas</option>
+                                        <option value="pasadas">Fechas pasadas</option>
+                                        <option value="hoy">Hoy</option>
+                                        <option value="proximas">Fechas próximas</option>
+                                    </select>
+                                </div>
+                                {%if cargo == "ADMINISTRADOR" %}
+                                    <div class="col-md-3">
+                                        <a href="{% url 'mostrar_registrar_consejo' %}" class="btn btn-success w-100">
+                                            <i class="fas fa-plus me-1"></i>Nuevo Consejo
+                                        </a>
+                                    </div>
+                                {%endif%}
+                            </div>
+                        </div>
+
+                        <!-- Estadísticas rápidas -->
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <div class="card bg-primary text-white">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title" id="consejosTotal">{{ consejos_total }}</h5>
+                                        <p class="card-text">Total Consejos</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-success text-white">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title" id="consejosProximos">{{ consejos_proximos_count }}</h5>
+                                        <p class="card-text">Próximos</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-warning text-white">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title" id="consejosHoy">{{ consejos_hoy_count }}</h5>
+                                        <p class="card-text">Hoy</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-danger text-white">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title" id="consejosPasados">{{ consejos_pasados_count }}</h5>
+                                        <p class="card-text">Pasados</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <!-- Tabla de consejos -->
+                        {% if consejos %}
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped" id="tablaConsejos">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Fecha Planificada</th>
+                                        <th>Administrativo</th>
+                                        <th>N° Profesores</th>
+                                        <th>Comentarios</th>
+                                        <th>Acuerdos</th>
+                                        <th>Archivos</th>
+                                        <th>Fecha Registro</th>
+                                        {%if cargo == "ADMINISTRADOR" %}
+                                            <th>Acciones</th>
+                                        {%endif%}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for consejo in consejos %}
+                                    <tr data-fecha="{{ consejo.FechaHoraPlanificadaConsejo|date:'Y-m-d' }}" data-fecha-hora="{{ consejo.FechaHoraPlanificadaConsejo|date:'Y-m-d\TH:i' }}">
+                                        <td>
+                                            <span class="badge bg-secondary">#{{ consejo.idConsejo }}</span>
+                                        </td>
+                                        <td>
+                                            <div class="fecha-planificada" 
+                                                 data-fecha="{{ consejo.FechaHoraPlanificadaConsejo|date:'Y-m-d' }}" data-fecha-hora="{{ consejo.FechaHoraPlanificadaConsejo|date:'Y-m-d\TH:i' }}">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                {{ consejo.FechaHoraPlanificadaConsejo|date:"d/m/Y" }}<br>
+                                                <small class="text-muted">
+                                                    <i class="fas fa-clock me-1"></i>
+                                                    {{ consejo.FechaHoraPlanificadaConsejo|date:"H:i" }}
+                                                </small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <strong>{{ consejo.Administrativo.first_name }} {{ consejo.Administrativo.last_name }}</strong><br>
+                                                <small class="text-muted">{{ consejo.Administrativo.username }}</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info">
+                                                <i class="fas fa-users me-1"></i>
+                                                {{ consejo.NumeroProfesoresConsejo }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="comentarios-preview" title="{{ consejo.ComentariosConsejo }}">
+                                                {{ consejo.ComentariosConsejo }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="acuerdos-preview" title="{{ consejo.AcuerdosConsejo }}">
+                                                {{ consejo.AcuerdosConsejo }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex flex-column gap-1">
+                                                {% if consejo.Archivo1Consejo and 'sinimagen' not in consejo.Archivo1Consejo.name %}
+                                                    <a href="{{ consejo.Archivo1Consejo.url }}" target="_blank" class="archivo-link">
+                                                        <i class="fas fa-file me-1"></i>Archivo 1
+                                                    </a>
+                                                {% endif %}
+                                                {% if consejo.Archivo2Consejo and 'sinimagen' not in consejo.Archivo2Consejo.name %}
+                                                    <a href="{{ consejo.Archivo2Consejo.url }}" target="_blank" class="archivo-link">
+                                                        <i class="fas fa-file me-1"></i>Archivo 2
+                                                    </a>
+                                                {% endif %}
+                                                {% if consejo.Archivo3Consejo and 'sinimagen' not in consejo.Archivo3Consejo.name %}
+                                                    <a href="{{ consejo.Archivo3Consejo.url }}" target="_blank" class="archivo-link">
+                                                        <i class="fas fa-file me-1"></i>Archivo 3
+                                                    </a>
+                                                {% endif %}
+                                                {% if not consejo.Archivo1Consejo or 'sinimagen' in consejo.Archivo1Consejo.name %}
+                                                    {% if not consejo.Archivo2Consejo or 'sinimagen' in consejo.Archivo2Consejo.name %}
+                                                        {% if not consejo.Archivo3Consejo or 'sinimagen' in consejo.Archivo3Consejo.name %}
+                                                            <small class="text-muted">Sin archivos</small>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">
+                                                {{ consejo.FechaHoraRegistroConsejo|date:"d/m/Y H:i" }}
+                                            </small>
+                                        </td>
+                                        {%if cargo == "ADMINISTRADOR" %}
+                                        <td>
+                                            <div class="d-flex flex-column gap-1">
+                                                <a href="{% url 'mostrar_modificar_consejo' consejo.idConsejo %}" 
+                                                   class="btn btn-warning btn-action" title="Modificar">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            <!--    <button type="button" class="btn btn-danger btn-action" 
+                                                        onclick="confirmarEliminacion({{ consejo.idConsejo }})" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button> -->
+                                            </div>
+                                        </td>
+                                        {%endif%}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No hay consejos de profesores registrados</h5>
+                            <p class="text-muted">Comience registrando el primer consejo de profesores.</p>
+                            <a href="{% url 'mostrar_registrar_consejo' %}" class="btn btn-primary">
+                                <i class="fas fa-plus me-1"></i>Registrar Primer Consejo
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Función para clasificar fechas y actualizar estadísticas
+        function actualizarEstadisticas() {
+            const now = new Date();
+            const hoy = new Date(now);
+            hoy.setHours(0, 0, 0, 0);
+            
+            let proximos = 0, pasados = 0, hoyCount = 0;
+            
+            document.querySelectorAll('#tablaConsejos tbody tr[data-fecha]').forEach(function(elemento) {
+                const fechaHoraStr = elemento.getAttribute('data-fecha-hora');
+                const fecha = new Date(fechaHoraStr);
+                fecha.setHours(0, 0, 0, 0);
+                
+                const fechaElement = elemento.querySelector('.fecha-planificada');
+                if (!fechaElement) return;
+                
+                if (new Date(fechaHoraStr) < now) {
+                    pasados++;
+                    fechaElement.classList.add('fecha-pasada');
+                } else if (fecha.getTime() === hoy.getTime()) {
+                    hoyCount++;
+                    fechaElement.classList.add('fecha-hoy');
+                } else {
+                    proximos++;
+                    fechaElement.classList.add('fecha-proxima');
+                }
+            });
+            
+            document.getElementById('consejosProximos').textContent = proximos;
+            document.getElementById('consejosHoy').textContent = hoyCount;
+            document.getElementById('consejosPasados').textContent = pasados;
+        }
+
+        // Función de búsqueda
+        function filtrarTabla() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filterFecha = document.getElementById('filterFecha').value;
+            const filas = document.querySelectorAll('#tablaConsejos tbody tr');
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+            
+            filas.forEach(function(fila) {
+                const texto = fila.textContent.toLowerCase();
+                const fechaStr = fila.getAttribute('data-fecha');
+                const fecha = new Date(fechaStr);
+                fecha.setHours(0, 0, 0, 0);
+                
+                let mostrarPorTexto = texto.includes(searchTerm);
+                let mostrarPorFecha = true;
+                
+                if (filterFecha === 'pasadas') {
+                    mostrarPorFecha = fecha < hoy;
+                } else if (filterFecha === 'hoy') {
+                    mostrarPorFecha = fecha.getTime() === hoy.getTime();
+                } else if (filterFecha === 'proximas') {
+                    mostrarPorFecha = fecha > hoy;
+                }
+                
+                if (mostrarPorTexto && mostrarPorFecha) {
+                    fila.style.display = '';
+                } else {
+                    fila.style.display = 'none';
+                }
+            });
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', filtrarTabla);
+        document.getElementById('filterFecha').addEventListener('change', filtrarTabla);
+
+        // Función para confirmar eliminación
+        function confirmarEliminacion(idConsejo) {
+            Swal.fire({
+                title: '¿Está seguro?',
+                text: '¿Desea deshabilitar este consejo de profesores?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, deshabilitar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/eliminar_consejo/${idConsejo}/`;
+                }
+            });
+        }
+
+        // Inicializar al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarEstadisticas();
+        });
+
+        // Mostrar mensajes de Django
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
+                    title: '{{ message }}',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            {% endfor %}
+        {% endif %}
+    </script>
+</body>
+</html>

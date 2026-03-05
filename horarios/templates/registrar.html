@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <link rel="icon" href="{% static "/imagenes/logo.PNG"%}"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        background: #ffffff;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 20px 0;
+      }
+      
+      .form-container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 40px;
+        margin-top: 30px;
+      }
+      
+      .form-title {
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 30px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      
+      .form-control-custom {
+        border: 2px solid #e1e5e9;
+        border-radius: 12px;
+        padding: 15px 20px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.9);
+      }
+      
+      .form-control-custom:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        background: white;
+        transform: translateY(-2px);
+      }
+      
+      .form-label-custom {
+        color: #555;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+      
+      .btn-register {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 12px;
+        padding: 15px 40px;
+        font-size: 16px;
+        font-weight: 600;
+        color: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        width: 100%;
+      }
+      
+      .btn-register:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+      }
+      
+      .form-links a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+      
+      .form-links a:hover {
+        color: #764ba2;
+        text-decoration: underline;
+      }
+      
+      .alert-custom {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        margin-top: 20px;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="form-container">
+                    <h3 class="form-title">Registro de Usuario</h3>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="username" class="form-label form-label-custom">Nombre de Usuario</label>
+                            <input type="text" class="form-control form-control-custom" id="username" name="username" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="form-label form-label-custom">Correo Electrónico</label>
+                            <input type="email" class="form-control form-control-custom" id="email" name="email" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="cargo" class="form-label form-label-custom">Cargo</label>
+                            <select class="form-select form-control-custom" id="cargo" name="cargo" required>
+                                <option value="ADMINISTRADOR">Administrador</option>
+                                <option value="DIRECTOR">Director</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label form-label-custom">Contraseña</label>
+                            <input type="password" class="form-control form-control-custom" id="password" name="password" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="confirm_password" class="form-label form-label-custom">Confirmar Contraseña</label>
+                            <input type="password" class="form-control form-control-custom" id="confirm_password" name="confirm_password" required>
+                        </div>
+                        <div class="mb-4">
+                            <button type="submit" class="btn btn-register">Registrarse</button>
+                        </div>
+                        <div class="text-center form-links">
+                            <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Iniciar Sesión</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if r2 != 'Complete el formulario para registrarse'%}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ r2 }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

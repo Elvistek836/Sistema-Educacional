@@ -1,0 +1,2300 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		{% load static %}
+
+		<meta charset="UTF-8"/>
+		<title>Horarios</title>
+
+		<link rel="icon" href="{% static "/imagenes/logo.PNG"%}"/>
+
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.all.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.min.css">
+		
+		<!-- JavaScript --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+		<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+		<!-- CSS -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+		<!-- Default theme -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+		<!-- Semantic UI theme -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+		<!-- Bootstrap theme -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+		<script>
+            const botonCerrarSesion = () => {
+                Swal.fire({
+					title: '¿Esta Seguro?',
+					text: "Debera iniciar sesion nuevamente!",
+					icon: 'question',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Aceptar',
+					cancelButtonText: 'Cancelar'
+				  }).then((result) => {
+					if (result.isConfirmed) {
+						window.location.href = "/logout";
+					}
+				  })
+            }
+            
+        </script>
+		<style>
+        body {
+            background: #ffffff;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            z-index: 1000;
+            overflow-x: hidden;
+        }
+		
+		.navbar-modern {
+			background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+			box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+			border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+			backdrop-filter: blur(10px);
+		}
+		
+		.navbar-brand-modern {
+			font-weight: 600;
+			font-size: 1.4rem;
+			text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+			transition: all 0.3s ease;
+		}
+		
+		.navbar-brand-modern:hover {
+			transform: scale(1.05);
+		}
+		
+		.nav-link-modern {
+			color: white !important;
+			font-weight: 500;
+			font-size: 1rem;
+			padding: 12px 20px !important;
+			border-radius: 8px;
+			transition: all 0.3s ease;
+			margin: 0 2px;
+			border-left: none !important;
+			position: relative;
+		}
+		
+		.nav-link-modern:hover {
+			background: rgba(255, 255, 255, 0.2);
+			transform: translateY(-2px);
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+			color: white !important;
+		}
+		
+		.nav-link-modern:active {
+			transform: translateY(0);
+		}
+		
+		.logo-container {
+			transition: all 0.3s ease;
+		}
+		
+			.logo-container:hover {
+				transform: scale(1.05);
+			}
+			.offcanvas .offcanvas-body.navbar-nav{
+				display:flex;
+				flex-direction: column;
+				flex-wrap: wrap;
+				height: calc(100vh - 140px);
+				align-content: flex-start;
+			}
+		
+		.banner-container {
+			text-align: center;
+			padding: 40px 20px;
+			background: rgba(255, 255, 255, 0.95);
+			margin: 30px auto;
+			border-radius: 20px;
+			box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			max-width: 90%;
+		}
+		
+		.banner-image {
+			max-width: 100%;
+			height: auto;
+			border-radius: 15px;
+			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+			transition: all 0.3s ease;
+		}
+		
+		.banner-image:hover {
+			transform: scale(1.02);
+			box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+		}
+		
+		.navbar-toggler {
+			border: 2px solid rgba(255, 255, 255, 0.3);
+			border-radius: 8px;
+		}
+		
+		.navbar-toggler:focus {
+			box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+		}
+		
+		@media (max-width: 991px) {
+			.navbar-nav {
+				background: rgba(0, 0, 0, 0.1);
+				border-radius: 10px;
+				padding: 10px;
+				margin-top: 10px;
+			}
+		}
+
+			.content-container {
+				background: rgba(255,255,255,0.95);
+				border-radius: 15px;
+				padding: 30px;
+				margin: 20px auto;
+				max-width: 90%;
+				box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+			}
+
+			.professor-form {
+				background: rgba(255,255,255,0.9);
+				border-radius: 10px;
+				padding: 20px;
+				margin: 20px auto;
+				max-width: 400px;
+				box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+			}
+
+			.professor-form select {
+				border: 2px solid #667eea;
+				border-radius: 8px;
+				padding: 10px;
+				transition: all 0.3s ease;
+			}
+
+			.professor-form select:focus {
+				border-color: #764ba2;
+				box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+			}
+
+			.search-btn {
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				border: none;
+				color: white;
+				padding: 10px 15px;
+				border-radius: 8px;
+				transition: all 0.3s ease;
+			}
+
+			.search-btn:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+			}
+
+			.professor-info {
+				background: rgba(255,255,255,0.9);
+				border-radius: 10px;
+				padding: 20px;
+				margin: 20px auto;
+				max-width: 600px;
+				box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+				text-align: center;
+			}
+
+            .schedule-table {
+                background: rgba(255, 255, 255, 0.95);
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                margin: 20px auto;
+                max-width: 100vw;
+                table-layout: fixed;
+                width: 80% !important;
+            }
+
+            .schedule-table td, .schedule-table th {
+                word-break: break-word;
+                white-space: normal;
+                width: 16.66%;
+                height: 100px;
+            }
+
+			.schedule-table th {
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				color: white;
+				font-weight: 600;
+				padding: 15px;
+				border: none;
+			}
+
+			.block-header {
+				background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%) !important;
+				font-weight: bold;
+				color: #2d3436;
+			}
+
+			.schedule-table td {
+				padding: 12px;
+				border: 1px solid #e9ecef;
+				transition: all 0.3s ease;
+			}
+
+			.schedule-table tbody tr:hover {
+				background-color: rgba(102, 126, 234, 0.1);
+			}
+
+			.print-btn {
+				background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+				border: none;
+				color: white;
+				padding: 10px 20px;
+				border-radius: 8px;
+				transition: all 0.3s ease;
+				margin: 10px;
+			}
+
+			.print-btn:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+			}
+
+			.user-info {
+				background: rgba(255, 255, 255, 0.1);
+				border-radius: 8px;
+				padding: 8px 12px;
+				backdrop-filter: blur(5px);
+				border: 1px solid rgba(255, 255, 255, 0.2);
+				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+			}
+
+			@media print {
+				.dontPrint{
+					display:none;
+				};
+				table{
+					border-collapse: collapse;
+					thead-tr-th{
+						background-color: #ffff00;
+					}
+				};
+				
+		   }
+		   .navbar-modern {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1100;
+        }
+
+        .navbar-brand-modern {
+            font-weight: 600;
+            font-size: 1.4rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand-modern:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-link-modern {
+            color: white !important;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 12px 16px !important;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin: 0 2px;
+            border-left: none !important;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .nav-link-modern:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: white !important;
+        }
+
+        .nav-link-modern:active {
+            transform: translateY(0);
+        }
+
+        .offcanvas .offcanvas-body.navbar-nav {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            gap: 8px;
+            height: calc(100vh - 140px);
+            align-content: flex-start;
+        }
+
+        .offcanvas-end {
+            position: fixed;
+            top: 50%;
+            left: 67%;
+            width: var(--bs-offcanvas-width);
+            max-height: 80vh;
+            transform: translate(100%, -50%) !important;
+            border-radius: 12px;
+        }
+        .offcanvas-end.show {
+            transform: translate(-50%, -50%) !important;
+        }
+
+        .navbar-toggler {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+        }
+        @media (max-width: 991px) {
+            .navbar-nav {
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                padding: 10px;
+                margin-top: 10px;
+            }
+            
+            .user-info {
+                margin: 10px 0;
+                text-align: center;
+                font-size: 0.8rem;
+            }
+        }
+		</style>
+        <style>
+            .swal2-container{z-index:1200 !important;}
+            .offcanvas.offcanvas-end { right: 0; left: auto !important; top: 0; bottom: 0; height: 100vh; }
+            .offcanvas.offcanvas-end:not(.show) { transform: translateX(100%) !important; }
+            .offcanvas.offcanvas-end.show { transform: translateX(0) !important; }
+            .navbar-modern { background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important; box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3); border-bottom: 3px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); z-index: 1100; }
+            .navbar-brand-modern { font-weight: 600; font-size: 1.2rem; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; }
+            .nav-link-modern { color: white !important; font-weight: 500; font-size: 1rem; padding: 12px 16px !important; border-radius: 10px; transition: all 0.3s ease; margin: 0 2px; border-left: none !important; position: relative; display: flex; align-items: center; justify-content: flex-start; }
+            .nav-link-modern:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); color: white !important; }
+            .logo-container { transition: all 0.3s ease; }
+            .logo-container:hover { transform: scale(1.05); }
+            .offcanvas .offcanvas-body.navbar-nav { display: flex; flex-direction: column; flex-wrap: nowrap; gap: 8px; align-content: flex-start; }
+        </style>
+    </head>
+<body>
+	<style>
+        body {
+            background: #ffffff;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .navbar-modern {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1100;
+        }
+        
+        .navbar-brand-modern {
+            font-weight: 600;
+            font-size: 1.4rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand-modern:hover {
+            transform: scale(1.05);
+        }
+        
+        .nav-link-modern {
+            color: white !important;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 12px 20px !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin: 0 2px;
+            border-left: none !important;
+            position: relative;
+        }
+        
+        .nav-link-modern:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: white !important;
+        }
+        
+        .nav-link-modern:active {
+            transform: translateY(0);
+        }
+        
+        .logo-container {
+            transition: all 0.3s ease;
+        }
+        
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+        
+        .banner-container {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            margin: 30px auto;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 90%;
+        }
+        
+        .banner-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .banner-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .navbar-toggler {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+        }
+        
+        .user-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px 12px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+		@media (max-width: 991px) {
+            .navbar-nav {
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                padding: 10px;
+                margin-top: 10px;
+            }
+            
+            .user-info {
+                margin: 10px 0;
+                text-align: center;
+                font-size: 0.8rem;
+            }
+        }
+	</style>
+	
+	
+
+		{% if cargo == "DIRECTOR" %}
+
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_certificados' %}"><i class="fas fa-certificate me-2"></i>Certificados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-users me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_historial"><i class="fas fa-clock-rotate-left me-2"></i>Historial de Acciones</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% elif cargo == "PROFESOR" %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+					
+					{% if datpro %}
+						<div class="user-info text-white" style="margin-right:20px; font-size:0.9rem;">
+							<div><strong>Profesor:</strong> {{ datpro.0.nombre }} {{ datpro.0.apellido }}</div>
+							<div><strong>RUT:</strong> {{ datpro.0.rut }}</div>
+						</div>
+					{% endif %}
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% else %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_profesor"><i class="fas fa-user-plus me-2"></i>Registrar Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_asignaturas"><i class="fas fa-book me-2"></i>Registrar Asignaturas</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_horarios"><i class="fas fa-calendar-plus me-2"></i>Crear Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/listar_alumnos"><i class="fas fa-users me-2"></i>Listar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_alumno"><i class="fas fa-user-plus me-2"></i>Registrar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_atenciones' %}"><i class="fas fa-briefcase-medical me-2"></i>Atenciones</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-user-group me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_certificados' %}"><i class="fas fa-certificate me-2"></i>Certificados</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% endif %}
+
+	{%if cargo != "PROFESOR"%}
+		{%if pro%}
+			<div class="professor-form dontPrint">
+				<form action="/buscar_pro" method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+					<select name="oppro" class="form-select-lg text-center" style="margin-bottom:10px; width:70%;" required/>
+						<option value="">Seleccione Profesor</option>
+						{%for x in pro%}
+							<option value="{{x.id}}">{{x.nombre}} {{x.apellido}}</option>
+						{%endfor%}
+					</select>
+					<button type="submit" class="search-btn btn-lg">
+						<i class="bi bi-search"></i>
+					</button>
+				</form>
+			</div>
+			<br>
+			{%if rs%}
+			<div class="professor-info">
+				<center>
+					<h5>Horario del Profesor {{rs.0.nombre}} {{rs.0.apellido}}</h5>
+					<h6>Rut {{rs.0.rut}}</h6>
+					<button onclick="window.print();" class="print-btn dontPrint" type="button">
+						<i class="bi bi-printer"></i>Imprimir 
+					</button>
+				</center>
+			</div>
+			{%endif%}
+			<br>
+			<br>
+			<br>
+			
+			{%if hor%}
+				<table class="table table-hover table-bordered schedule-table" id="Tabla" style="width:60%; margin:auto;" border>
+					<thead class="text-center">
+						<tr class="align-middle">
+							<th>BLOQUE</th>
+							<th>LUNES</th>
+							<th>MARTES</th>
+							<th>MIERCOLES</th>
+							<th>JUEVES</th>
+							<th>VIERNES</th>
+						</tr>
+					</thead>
+					<tbody class="text-center">
+						<tr class="align-middle">
+							<td class="block-header">1</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 1 and a.dia == "LUNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in lun1%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun1.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{% endif%}
+									{% endif%}
+								{% endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 1 and a.dia == "MARTES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mar1%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar1.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 1 and a.dia == "MIERCOLES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mie1%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie1.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 1 and a.dia == "JUEVES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in jue1%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue1.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 1 and a.dia == "VIERNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in vie1%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie1.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+						</tr>
+						<tr class="align-middle">
+							<td class="block-header">2</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 2 and a.dia == "LUNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in lun2%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun2.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 2 and a.dia == "MARTES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mar2%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar2.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 2 and a.dia == "MIERCOLES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mie2%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie2.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 2 and a.dia == "JUEVES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in jue2%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue2.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 2 and a.dia == "VIERNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in vie2%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie2.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+						</tr>
+						<tr class="align-middle">
+							<td class="block-header">3</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 3 and a.dia == "LUNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in lun3%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun3.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 3 and a.dia == "MARTES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mar3%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar3.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 3 and a.dia == "MIERCOLES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mie3%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie3.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 3 and a.dia == "JUEVES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in jue3%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue3.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 3 and a.dia == "VIERNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in vie3%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie3.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+						</tr>
+						<tr class="align-middle">
+							<td class="block-header">4</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 4 and a.dia == "LUNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in lun4%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun4.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 4 and a.dia == "MARTES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mar4%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar4.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 4 and a.dia == "MIERCOLES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mie4%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie4.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 4 and a.dia == "JUEVES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in jue4%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue4.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 4 and a.dia == "VIERNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in vie4%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie4.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+						</tr>
+						<tr class="align-middle">
+							<td class="block-header">5</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 5 and a.dia == "LUNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in lun5%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun5.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 5 and a.dia == "MARTES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mar5%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar5.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 5 and a.dia == "MIERCOLES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mie5%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie5.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 5 and a.dia == "JUEVES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in jue5%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue5.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 5 and a.dia == "VIERNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in vie5%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie5.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+						</tr>
+						<tr class="align-middle">
+							<td class="block-header">6</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 6 and a.dia == "LUNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in lun6%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun6.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 6 and a.dia == "MARTES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mar6%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar6.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 6 and a.dia == "MIERCOLES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mie6%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie6.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 6 and a.dia == "JUEVES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in jue6%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue6.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 6 and a.dia == "VIERNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in vie6%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie6.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+						</tr>
+						<tr class="align-middle">
+							<td class="block-header">7</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 7 and a.dia == "LUNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in lun7%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun7.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 7 and a.dia == "MARTES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mar7%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar7.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 7 and a.dia == "MIERCOLES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mie7%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie7.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 7 and a.dia == "JUEVES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in jue7%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue7.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 7 and a.dia == "VIERNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in vie7%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie7.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+						</tr>
+						<tr class="align-middle">
+							<td class="block-header">8</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 8 and a.dia == "LUNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in lun8%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun8.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 8 and a.dia == "MARTES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mar8%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar8.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 8 and a.dia == "MIERCOLES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mie8%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie8.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 8 and a.dia == "JUEVES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in jue8%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue8.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 8 and a.dia == "VIERNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in vie8%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie8.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+						</tr>
+						<tr class="align-middle">
+							<td class="block-header">9</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 9 and a.dia == "LUNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in lun9%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun9.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 9 and a.dia == "MARTES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mar9%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar9.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 9 and a.dia == "MIERCOLES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in mie9%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie9.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 9 and a.dia == "JUEVES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in jue9%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue9.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+							<td>
+								{%for a in hor%}
+									{%if a.bloque == 9 and a.dia == "VIERNES"%}
+										{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+											Sin Registro
+										{%else%}
+											{%for e in vie9%}
+												{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie9.0.curso_id%}
+													{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+													y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+												{%endif%}
+											{%endfor%}
+										{%endif%}
+									{%endif%}
+								{%endfor%}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			
+			{%endif%}
+		{%else%}
+			<div style="text-align:center; margin-top:5%">
+				<h4>No Existen Registros</h4>
+			</div>
+		{%endif%}
+	{%else%}
+		{%if hor%}
+			<table class="table table-hover table-bordered schedule-table" id="Tabla" style="width:60%; margin:auto;" border>
+				<thead class="text-center">
+					<tr class="align-middle">
+						<th>BLOQUE</th>
+						<th>LUNES</th>
+						<th>MARTES</th>
+						<th>MIERCOLES</th>
+						<th>JUEVES</th>
+						<th>VIERNES</th>
+					</tr>
+				</thead>
+				<tbody class="text-center">
+					<tr class="align-middle">
+						<td class="block-header">1</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 1 and a.dia == "LUNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in lun1%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun1.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{% endif%}
+								{% endif%}
+							{% endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 1 and a.dia == "MARTES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mar1%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar1.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 1 and a.dia == "MIERCOLES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mie1%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie1.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 1 and a.dia == "JUEVES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in jue1%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue1.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 1 and a.dia == "VIERNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in vie1%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie1.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+					</tr>
+					<tr class="align-middle">
+						<td class="block-header">2</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 2 and a.dia == "LUNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in lun2%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun2.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 2 and a.dia == "MARTES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mar2%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar2.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 2 and a.dia == "MIERCOLES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mie2%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie2.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 2 and a.dia == "JUEVES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in jue2%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue2.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 2 and a.dia == "VIERNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in vie2%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie2.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+					</tr>
+					<tr class="align-middle">
+						<td class="block-header">3</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 3 and a.dia == "LUNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in lun3%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun3.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 3 and a.dia == "MARTES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mar3%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar3.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 3 and a.dia == "MIERCOLES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mie3%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie3.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 3 and a.dia == "JUEVES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in jue3%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue3.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 3 and a.dia == "VIERNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in vie3%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie3.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+					</tr>
+					<tr class="align-middle">
+						<td class="block-header">4</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 4 and a.dia == "LUNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in lun4%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun4.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 4 and a.dia == "MARTES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mar4%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar4.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 4 and a.dia == "MIERCOLES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mie4%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie4.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 4 and a.dia == "JUEVES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in jue4%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue4.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 4 and a.dia == "VIERNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in vie4%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie4.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+					</tr>
+					<tr class="align-middle">
+						<td class="block-header">5</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 5 and a.dia == "LUNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in lun5%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun5.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 5 and a.dia == "MARTES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mar5%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar5.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 5 and a.dia == "MIERCOLES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mie5%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie5.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 5 and a.dia == "JUEVES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in jue5%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue5.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 5 and a.dia == "VIERNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in vie5%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie5.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+					</tr>
+					<tr class="align-middle">
+						<td class="block-header">6</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 6 and a.dia == "LUNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in lun6%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun6.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 6 and a.dia == "MARTES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mar6%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar6.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 6 and a.dia == "MIERCOLES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mie6%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie6.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 6 and a.dia == "JUEVES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in jue6%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue6.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 6 and a.dia == "VIERNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in vie6%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie6.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+					</tr>
+					<tr class="align-middle">
+						<td class="block-header">7</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 7 and a.dia == "LUNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in lun7%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun7.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 7 and a.dia == "MARTES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mar7%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar7.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 7 and a.dia == "MIERCOLES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mie7%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie7.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 7 and a.dia == "JUEVES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in jue7%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue7.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 7 and a.dia == "VIERNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in vie7%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie7.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+					</tr>
+					<tr class="align-middle">
+						<td class="block-header">8</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 8 and a.dia == "LUNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in lun8%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun8.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 8 and a.dia == "MARTES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mar8%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar8.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 8 and a.dia == "MIERCOLES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mie8%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie8.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 8 and a.dia == "JUEVES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in jue8%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue8.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 8 and a.dia == "VIERNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in vie8%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie8.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+					</tr>
+					<tr class="align-middle">
+						<td class="block-header">9</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 9 and a.dia == "LUNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in lun9%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == lun9.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 9 and a.dia == "MARTES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mar9%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mar9.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 9 and a.dia == "MIERCOLES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in mie9%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == mie9.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 9 and a.dia == "JUEVES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in jue9%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == jue9.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+						<td>
+							{%for a in hor%}
+								{%if a.bloque == 9 and a.dia == "VIERNES"%}
+									{%if a.asignatura_id == 0 or a.asignatura_id == NULL%}
+										Sin Registro
+									{%else%}
+										{%for e in vie9%}
+											{%if a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia and a.curso_id == vie9.0.curso_id%}
+												{{a.asignatura.nombre}}<br> ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%elif a.bloque == e.bloque and a.asignatura_id == e.asignatura_id and a.dia == e.dia%}
+												y ({{a.asignatura.codigo}}) ({{a.curso.nombre}})
+											{%endif%}
+										{%endfor%}
+									{%endif%}
+								{%endif%}
+							{%endfor%}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		{%else%}
+			<div style="text-align:center; margin-top:5%">
+				<h4>No Existen Registros</h4>
+			</div>
+		{%endif%}
+	{%endif%}
+	{%if r%}
+		<script> alertify.success('{{r}}');</script>
+	{%endif%}
+
+	{%if r2%}
+		<script> alertify.error('{{r2}}');</script>
+	{%endif%}
+
+	{%if r3%}
+		<script> alertify.warning('{{r3}}');</script>
+	{%endif%}
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+	
+</body>
+</html>

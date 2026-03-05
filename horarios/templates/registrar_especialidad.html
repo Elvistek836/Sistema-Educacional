@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		{% load static %}
+
+		<meta charset="UTF-8"/>
+		<title>Registrar Profesor</title>
+
+		<link rel="icon" href="{% static "/imagenes/logo.PNG"%}"/>
+
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.all.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.min.css">
+
+		<!-- JavaScript --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+		<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+		<!-- CSS -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+		<!-- Default theme -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+		<!-- Semantic UI theme -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+		<!-- Bootstrap theme -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+		<script>
+            const botonCerrarSesion = () => {
+                Swal.fire({
+					title: '¿Esta Seguro?',
+					text: "Debera iniciar sesion nuevamente!",
+					icon: 'question',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Aceptar',
+					cancelButtonText: 'Cancelar'
+				  }).then((result) => {
+					if (result.isConfirmed) {
+						window.location.href = "/logout";
+					}
+				  })
+            }
+			const botonEliminar = (id) => {
+                Swal.fire({
+					title: '¿Esta Seguro?',
+					text: "Desea Eliminar la Especialidad del Profesor?",
+					icon: 'question',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Aceptar',
+					cancelButtonText: 'Cancelar'
+				  }).then((result) => {
+					if (result.isConfirmed) {
+						window.location.href = "/eliminar_esp/"+id+"/"+{{rs.0.id}};
+					}
+				  })
+            }
+
+        </script>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+        <style>.swal2-container{z-index:1200 !important;}</style>
+				<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    </head>
+<body style="overflow-x:hidden;">
+	<style>
+        body {
+            background: #ffffff;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            z-index: 1000;
+        }
+		
+        .navbar-modern {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1100;
+        }
+		
+		.navbar-brand-modern {
+			font-weight: 600;
+			font-size: 1.4rem;
+			text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+			transition: all 0.3s ease;
+		}
+		
+		.navbar-brand-modern:hover {
+			transform: scale(1.05);
+		}
+		
+		.nav-link-modern {
+			color: white !important;
+			font-weight: 500;
+			font-size: 1rem;
+			padding: 12px 20px !important;
+			border-radius: 8px;
+			transition: all 0.3s ease;
+			margin: 0 2px;
+			border-left: none !important;
+			position: relative;
+		}
+		
+		.nav-link-modern:hover {
+			background: rgba(255, 255, 255, 0.2);
+			transform: translateY(-2px);
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+			color: white !important;
+		}
+		
+		.nav-link-modern:active {
+			transform: translateY(0);
+		}
+		
+		.logo-container {
+			transition: all 0.3s ease;
+		}
+		
+		.logo-container:hover {
+			transform: scale(1.05);
+		}
+		
+		.banner-container {
+			text-align: center;
+			padding: 40px 20px;
+			background: rgba(255, 255, 255, 0.95);
+			margin: 30px auto;
+			border-radius: 20px;
+			box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			max-width: 90%;
+		}
+		
+		.banner-image {
+			max-width: 100%;
+			height: auto;
+			border-radius: 15px;
+			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+			transition: all 0.3s ease;
+		}
+		
+		.banner-image:hover {
+			transform: scale(1.02);
+			box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+		}
+		
+		.navbar-toggler {
+			border: 2px solid rgba(255, 255, 255, 0.3);
+			border-radius: 8px;
+		}
+		
+		.navbar-toggler:focus {
+			box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+		}
+		
+		@media (max-width: 991px) {
+			.navbar-nav {
+				background: rgba(0, 0, 0, 0.1);
+				border-radius: 10px;
+				padding: 10px;
+				margin-top: 10px;
+			}
+		}
+
+		.content-container {
+			background: rgba(255, 255, 255, 0.95);
+			border-radius: 20px;
+			padding: 2rem;
+			margin: 2rem auto;
+			max-width: 95%;
+			box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+		}
+
+		.professor-info {
+			text-align: center;
+			margin-bottom: 2rem;
+			padding: 1.5rem;
+			background: linear-gradient(135deg, #667eea, #764ba2);
+			color: white;
+			border-radius: 15px;
+			box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+		}
+
+		.professor-info h5 {
+			margin-bottom: 0.5rem;
+			font-weight: 600;
+			font-size: 1.4rem;
+		}
+
+		.professor-info h6 {
+			margin-bottom: 0;
+			opacity: 0.9;
+			font-size: 1.1rem;
+		}
+
+        .modern-table {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+		.modern-table thead th {
+			background: linear-gradient(135deg, #667eea, #764ba2);
+			color: white;
+			font-weight: 600;
+			padding: 1rem;
+			border: none;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+		}
+
+		.modern-table tbody td {
+			padding: 1rem;
+			border: 1px solid rgba(0, 0, 0, 0.05);
+			vertical-align: middle;
+		}
+
+		.modern-table tbody tr:hover {
+			background: rgba(102, 126, 234, 0.05);
+			transition: all 0.3s ease;
+		}
+
+		.form-container {
+			background: rgba(255, 255, 255, 0.9);
+			border-radius: 15px;
+			padding: 2rem;
+			margin-top: 2rem;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+		}
+
+        .modern-select {
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+		.modern-select:focus {
+			border-color: #667eea;
+			box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+			outline: none;
+		}
+
+		.register-btn {
+			background: linear-gradient(135deg, #667eea, #764ba2);
+			border: none;
+			border-radius: 10px;
+			padding: 0.75rem 2rem;
+			font-weight: 600;
+			transition: all 0.3s ease;
+			color: white;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+		}
+
+		.register-btn:hover {
+			background: linear-gradient(135deg, #764ba2, #667eea);
+			transform: translateY(-2px);
+			box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+			color: white;
+		}
+
+		.delete-btn {
+			background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+			border: none;
+			border-radius: 8px;
+			padding: 0.5rem 0.75rem;
+			color: white;
+			transition: all 0.3s ease;
+			box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+		}
+
+		.delete-btn:hover {
+			background: linear-gradient(135deg, #ee5a52, #ff6b6b);
+			transform: translateY(-2px);
+			box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+		}
+
+		.section-title {
+			color: #333;
+			font-weight: 600;
+			margin-bottom: 1.5rem;
+			text-align: center;
+			font-size: 1.5rem;
+		}
+		.navbar-brand-modern {
+            font-weight: 600;
+            font-size: 1.4rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand-modern:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-link-modern {
+            color: white !important;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 12px 16px !important;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin: 0 2px;
+            border-left: none !important;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .nav-link-modern:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: white !important;
+        }
+
+        .nav-link-modern:active {
+            transform: translateY(0);
+        }
+
+        .offcanvas .offcanvas-body.navbar-nav {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            gap: 8px;
+            height: calc(100vh - 140px);
+            align-content: flex-start;
+        }
+
+        .offcanvas.offcanvas-end {
+            right: 0;
+            left: auto !important;
+            
+            max-height: 80vh;
+            border-radius: 12px;
+        }
+        .offcanvas.offcanvas-end:not(.show) {
+            transform: translateX(100%) !important;
+        }
+        .offcanvas.offcanvas-end.show {
+            transform: translateX(0) !important;
+        }
+
+        .navbar-toggler {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+        }
+        @media (max-width: 991px) {
+            .navbar-nav {
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                padding: 10px;
+                margin-top: 10px;
+            }
+            
+            .user-info {
+                margin: 10px 0;
+                text-align: center;
+                font-size: 0.8rem;
+            }
+        }
+	</style>
+	{% if cargo == "DIRECTOR" %}
+
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_certificados' %}"><i class="fas fa-certificate me-2"></i>Certificados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-users me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_historial"><i class="fas fa-clock-rotate-left me-2"></i>Historial de Acciones</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% elif cargo == "PROFESOR" %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+					
+					{% if datpro %}
+						<div class="user-info text-white" style="margin-right:20px; font-size:0.9rem;">
+							<div><strong>Profesor:</strong> {{ datpro.0.nombre }} {{ datpro.0.apellido }}</div>
+							<div><strong>RUT:</strong> {{ datpro.0.rut }}</div>
+						</div>
+					{% endif %}
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_certificados' %}"><i class="fas fa-certificate me-2"></i>Certificados</a>
+                            <a class="nav-link nav-link-modern" href="/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% elif cargo == "ESTUDIANTE" %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+					
+					{% if datest %}
+					<div class="user-info text-white" style="margin-right:20px; font-size:0.9rem;">
+						<div><strong>Alumno:</strong> {{ datest.0.nombre }} {{ datest.0.apellido_paterno }}</div>
+						<div><strong>Curso:</strong> {{ datest.0.curso }}</div>
+						<div><strong>RUN:</strong> {{ datest.0.run }}</div>
+					</div>
+					{% endif %}
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/perfil"><i class="fas fa-user me-2"></i>Mi Perfil</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% else %}
+		<div>		
+            <nav class="navbar navbar-modern" style="width:100%">
+				<div class="container-fluid">
+
+					<a href="/menu" class="logo-container">
+                        <img src="{% static "/imagenes/imagen1.PNG"%}" width="200px" style="margin-right:10px;" alt="No Encontrada"/>
+					</a>
+
+                    <span class="navbar-brand text-white navbar-brand-modern" style="margin-right:20px">Menu {{ nomUsuario }}</span>
+					
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+                    <div class="offcanvas offcanvas-end navbar-modern text-white" tabindex="-1" id="navbarNavAltMarkup" style="--bs-offcanvas-width: 320px; height: 100vh;">
+                        <div class="offcanvas-body navbar-nav" style="display:flex; flex-direction: column; gap:8px; height: 100vh; overflow-y:auto; align-items: stretch;">
+                            <a class="nav-link nav-link-modern" href="/menu"><i class="fas fa-home me-2"></i>Inicio</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_profesor"><i class="fas fa-user-plus me-2"></i>Registrar Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_asignaturas"><i class="fas fa-book me-2"></i>Registrar Asignaturas</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_horarios"><i class="fas fa-calendar-plus me-2"></i>Crear Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/listar_alumnos"><i class="fas fa-users me-2"></i>Listar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="/registrar_alumno"><i class="fas fa-user-plus me-2"></i>Registrar Alumnos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_actividades' %}"><i class="fas fa-list-check me-2"></i>Actividades</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_atenciones' %}"><i class="fas fa-briefcase-medical me-2"></i>Atenciones</a>
+                            <a class="nav-link nav-link-modern" href="/listar_consejos"><i class="fas fa-lightbulb me-2"></i>Consejos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_padres' %}"><i class="fas fa-user-group me-2"></i>Padres/Apoderados</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_insumos' %}"><i class="fas fa-boxes-stacked me-2"></i>Insumos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_prestamos' %}"><i class="fas fa-hand-holding me-2"></i>Préstamos</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_impresiones' %}"><i class="fas fa-print me-2"></i>Impresiones</a>
+                            <a class="nav-link nav-link-modern" href="{% url 'listar_certificados' %}"><i class="fas fa-certificate me-2"></i>Certificados</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios"><i class="fas fa-calendar-days me-2"></i>Horarios Cursos</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_horarios_profesores"><i class="fas fa-chalkboard-teacher me-2"></i>Horarios Profesores</a>
+                            <a class="nav-link nav-link-modern" href="/visualizar_disponibilidad"><i class="fas fa-calendar-check me-2"></i>Listar Disponibilidad</a>
+                            <a class="nav-link nav-link-modern" href="#" onClick="botonCerrarSesion()"><i class="fas fa-right-from-bracket me-2"></i>Cerrar Sesión</a>
+                        </div>
+                    </div>
+				</div>
+			</nav>
+			
+		</div>
+	{% endif %}
+	<div class="content-container">
+		<div class="professor-info">
+			<h5>Especialidades del Profesor {{rs.0.nombre}} {{rs.0.apellido}}</h5>
+			<h6>Rut {{rs.0.rut}}</h6>
+		</div>
+        <div style="margin-bottom:15px;">
+            <a href="/registrar_profesor" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Volver a Profesores
+            </a>
+        </div>
+    {%if esp%}
+        <div style="width:100%; margin-bottom:30px;">
+            <h4 class="section-title">Especialidades Registradas</h4>
+            <table class="table modern-table" style="width:100%; margin:auto;">
+                <thead>
+                    <tr class="text-center">
+                        <th>Nombre de la Especialidad</th>
+                        <th>Nivel Educativo</th>
+                        <!-- <th>Acciones</th> -->
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    {%for x in esp%}
+                        <tr class="align-middle">
+                            <td>{{x.nombre}}</td>
+                            <td>{{x.nivel}}</td>
+                            <!-- <td>
+                                <button type="button" onClick="botonEliminar({{x.id}})" class="delete-btn">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </td> -->
+                        </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    {%else%}
+        <script>
+            Swal.fire({
+                title: 'Registre Especialidades!!',
+                text: "El Profesor no Posee Especialidades Registradas",
+                icon: 'info',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar',
+              })
+        </script>
+    {%endif%}
+    <div class="form-container">
+        <h4 class="section-title">Registrar Nueva Especialidad</h4>
+        <center>
+            <form action="/registrar_esp/{{rs.0.id}}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <select name="opasg" class="modern-select text-center" style="margin-bottom:20px; width:50%;" required/>
+					<option value="">Seleccione una Asignatura</option>
+                    <option value='Artes (3ero y 4to Medio) - 2hrs'>Artes (3ero y 4to Medio) - 2hrs</option>
+                    <option value='Artes Visuales (1ero a 4to Basico) - 2hrs'>Artes Visuales (1ero a 4to Basico) - 2hrs</option>
+                    <option value='Artes Visuales (5to a 6to Basico) - 1hr'>Artes Visuales (5to a 6to Basico) - 1hr</option>
+                    <option value='Artes Visuales (5to a 6to Basico) - 1hrs'>Artes Visuales (5to a 6to Basico) - 1hrs</option>
+                    <option value='Artes Visuales o Música (1ero y 2do Medio) - 2hrs'>Artes Visuales o Música (1ero y 2do Medio) - 2hrs</option>
+                    <option value='Artes Visuales y Música (7mo y 8vo Basico) - 2hrs'>Artes Visuales y Música (7mo y 8vo Basico) - 2hrs</option>
+                    <option value='Asignatura Kinder - 1hr'>Asignatura Kinder - 1hr</option>
+                    <option value='Asignatura PreKinder - 1hr'>Asignatura PreKinder - 1hr</option>
+                    <option value='Ciencias Naturales  (1ero y 2do Medio) - 6hrs'>Ciencias Naturales  (1ero y 2do Medio) - 6hrs</option>
+                    <option value='Ciencias Naturales  (7mo y 8vo Basico) - 4hrs'>Ciencias Naturales  (7mo y 8vo Basico) - 4hrs</option>
+                    <option value='Ciencias Naturales (1ero a 6to Basico) - 3hrs'>Ciencias Naturales (1ero a 6to Basico) - 3hrs</option>
+                    <option value='Ciencias para la Ciudadanía (3ero y 4to Medio) - 2hrs'>Ciencias para la Ciudadanía (3ero y 4to Medio) - 2hrs</option>
+                    <option value='Educación Ciudadana (3ero y 4to Medio) - 2hrs'>Educación Ciudadana (3ero y 4to Medio) - 2hrs</option>
+                    <option value='Educación Física y Salud  (Todas) - 2hrs'>Educación Física y Salud  (Todas) - 2hrs</option>
+                    <option value='Electivo de biología (3ero y 4to Medio) - 6hrs'>Electivo de biología (3ero y 4to Medio) - 6hrs</option>
+                    <option value='Electivo de matematicas (3ero y 4to Medio) - 6hrs'>Electivo de matematicas (3ero y 4to Medio) - 6hrs</option>
+					<option value='Electivo de historia (3ero y 4to Medio) - 6hrs'>Electivo de historia (3ero y 4to Medio) - 6hrs</option>
+                    <option value='Electivo de lengua y literatura (3ero y 4to Medio) - 6hrs'>Electivo de lengua y literatura (3ero y 4to Medio) - 6hrs</option>
+                    <option value='Filosofía (3ero y 4to Medio) - 2hrs'>Filosofía (3ero y 4to Medio) - 2hrs</option>
+                    <option value='Historia, Geografía y Ciencias Sociales  (5to a 2do Medio) - 4hrs'>Historia, Geografía y Ciencias Sociales  (5to a 2do Medio) - 4hrs</option>
+                    <option value='Historia, Geografía y Ciencias Sociales (1ero a 4to Basico) - 3hrs'>Historia, Geografía y Ciencias Sociales (1ero a 4to Basico) - 3hrs</option>
+                    <option value='Historia, Geografía y Ciencias Sociales (3ero y 4to Medio) - 2hrs'>Historia, Geografía y Ciencias Sociales (3ero y 4to Medio) - 2hrs</option>
+                    <option value='Idioma Extranjero: Inglés  (5to a 2do medio) - 3hrs'>Idioma Extranjero: Inglés  (5to a 2do medio) - 3hrs</option>
+                    <option value='Inglés (3ero y 4to Medio) - 2hrs'>Inglés (3ero y 4to Medio) - 2hrs</option>
+                    <option value='Inglés (Libre Disposicion)  (1ero a 4to Basico) - 1hr'>Inglés (Libre Disposicion)  (1ero a 4to Basico) - 1hr</option>
+                    <option value='Inglés Nivel Transicion (Prekinder y Kinder) - 1hr'>Inglés Nivel Transicion (Prekinder y Kinder) - 1hr</option>
+                    <option value='Lengua y Literatura (3ero y 4to Medio) - 3hrs'>Lengua y Literatura (3ero y 4to Medio) - 3hrs</option>
+                    <option value='Lengua y Literatura (7mo a 2do Medio) - 6hrs'>Lengua y Literatura (7mo a 2do Medio) - 6hrs</option>
+                    <option value='Lenguaje y Comunicación  (5to y 6to Basico) - 6hrs'>Lenguaje y Comunicación  (5to y 6to Basico) - 6hrs</option>
+                    <option value='Lenguaje y Comunicación (1ero a 4to Basico) - 8hrs'>Lenguaje y Comunicación (1ero a 4to Basico) - 8hrs</option>
+                    <option value='Matemática  (1ero Basico a 2do Medio) - 6hrs'>Matemática  (1ero Basico a 2do Medio) - 6hrs</option>
+                    <option value='Matemática  (3ero y 4to Medio) - 3hrs'>Matemática  (3ero y 4to Medio) - 3hrs</option>
+                    <option value='Música  (1ero a 4to Basico) - 2hrs'>Música  (1ero a 4to Basico) - 2hrs</option>
+                    <option value='Música  (5to y 6to Basico) - 1hr'>Música  (5to y 6to Basico) - 1hr</option>
+                    <option value='Orientación  (1ero a 4to Basico) - 1hr'>Orientación  (1ero a 4to Basico) - 1hr</option>
+                    <option value='Orientación  (5to a 2do Medio) - 1hr'>Orientación  (5to a 2do Medio) - 1hr</option>
+                    <option value='Religión (Todas) - 2hrs'>Religión (Todas) - 2hrs</option>
+                    <option value='Tecnología  (1ero a 4to Basico) - 1hr'>Tecnología  (1ero a 4to Basico) - 1hr</option>
+                    <option value='Tecnología  (5to a 2do Medio) - 1hr'>Tecnología  (5to a 2do Medio) - 1hr</option>
+				</select>
+				<!--
+				<select name="opniv" class="form-select-lg text-center" style="margin-bottom:10px; width:13%; margin-left:20px;" required/>
+					<option value="">Seleccione nivel</option>
+					<option value="PREBASICA">PreBasica</option>
+					<option value="BASICA">Basica</option>
+					<option value="MEDIA">Media</option>
+				</select>
+                -->
+                <br>
+                <br>
+                <input type="submit" class="register-btn" style="width:25%;" value="Registrar Especialidad"/>
+            </form>
+        </center>
+    </div>
+	</div>
+    {%if r%}
+		<script> alertify.success('{{r}}');</script>
+	{%endif%}
+
+	{%if r2%}
+		<script> alertify.error('{{r2}}');</script>
+	{%endif%}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>
