@@ -11,6 +11,8 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from .decorators import role_required, profesor_data_only, alumno_data_only, login_or_session_required
 
+#----------------------------------------------------------------------
+#permite visualizar la pagina de login.
 def mostrarIndex(request):
     us=Usuario.objects.all().values()
     cur=Curso.objects.all().values()
