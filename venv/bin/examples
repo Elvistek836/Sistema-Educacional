@@ -1,0 +1,6 @@
+#!/home/benja/proyectos/Sistema-Educacional/venv/bin/python
+import sys
+from examples.types import main
+if __name__ == '__main__':
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
+    sys.exit(main())

@@ -147,19 +147,15 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email configuration for OTP
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 # Configuración usando variables de entorno (más seguro)
 # Crear archivo .env basado en .env.example y configurar las variables
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='tu_email@gmail.com')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='tu_password_app')
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='Sistema Educacional <tu_email@gmail.com>')
-
-if EMAIL_HOST_USER == 'tu_email@gmail.com' or EMAIL_HOST_PASSWORD == 'tu_password_app':
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    DEFAULT_FROM_EMAIL = 'Sistema Educacional <no-reply@example.com>'
+EMAIL_HOST_USER: str = config('EMAIL_HOST_USER', default='tu_email@gmail.com')
+EMAIL_HOST_PASSWORD: str = config('EMAIL_HOST_PASSWORD', default='tu_password_app')
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' if EMAIL_HOST_USER == 'tu_email@gmail.com' or EMAIL_HOST_PASSWORD == 'tu_password_app' else 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL: str = 'Sistema Educacional <no-reply@example.com>' if EMAIL_HOST_USER == 'tu_email@gmail.com' or EMAIL_HOST_PASSWORD == 'tu_password_app' else config('DEFAULT_FROM_EMAIL', default='Sistema Educacional <tu_email@gmail.com>')
 
 # Session timeout for OTP (5 minutes)
 OTP_SESSION_TIMEOUT = 300
