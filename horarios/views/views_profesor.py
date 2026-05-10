@@ -8,7 +8,6 @@ from django.db.models.functions import Coalesce
 from horarios.models import Profesor, Asignatura, Curso, AsignaturasProfesor, DisponibilidadProfesor, Horario, Usuario, Historial, Alumnos, Padre, Apoderado, Impresiones, Insumos, Prestamos, ConsejosProfesores, CURSOS_CHOICE, ESTADOIMPRESION_CHOICES
 from horarios.decorators import role_required, profesor_data_only, alumno_data_only, login_or_session_required
 from django.contrib.auth.models import User
-from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 
 
