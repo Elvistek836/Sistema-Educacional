@@ -1,20 +1,12 @@
-from datetime import datetime, timedelta
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.db import connection
-from django.utils import timezone
-from django.db.models import Count, OuterRef, Subquery, IntegerField
-from django.db.models.functions import Coalesce
-from horarios.models import Profesor, Asignatura, Curso, AsignaturasProfesor, DisponibilidadProfesor, Horario, Usuario, Historial, Alumnos, Padre, Apoderado, Impresiones, Insumos, Prestamos, ConsejosProfesores, CURSOS_CHOICE, ESTADOIMPRESION_CHOICES
-from django.contrib.auth.models import User
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.decorators import login_required
-from horarios.decorators import role_required, profesor_data_only, alumno_data_only, login_or_session_required
+from django.http import HttpRequest
+from horarios.models import Profesor, Usuario, Atenciones, Alumnos
+from horarios.decorators import role_required
 
 @role_required(["ADMINISTRADOR", "PROFESOR"])
-def listar_atenciones(request):
+def listar_atenciones(request: HttpRequest):
     """Vista para listar todas las atenciones"""
-    from .models import Atenciones
     nomUsuario = request.session.get("nomUsuario")
     cargoUsuario = request.session.get("cargoUsuario")
     atenciones = Atenciones.objects.all().order_by('-FechaHoraRegistro')
@@ -45,9 +37,9 @@ def listar_atenciones(request):
     return render(request, 'listar_atenciones.html', context)
 
 @role_required(["ADMINISTRADOR", "PROFESOR"])
-def mostrar_registrar_atencion(request):
+def mostrar_registrar_atencion(request: HttpRequest):
     """Vista para mostrar el formulario de registro de atenciones"""
-    from .models import Alumnos
+    
     nomUsuario = request.session.get("nomUsuario")
     cargoUsuario = request.session.get("cargoUsuario")
     alumnos = Alumnos.objects.all().order_by('nombre', 'apellido_paterno')
@@ -73,9 +65,9 @@ def mostrar_registrar_atencion(request):
     return render(request, 'registrar_atencion.html', context)
 
 @role_required(["ADMINISTRADOR", "PROFESOR"])
-def registrar_atencion(request):
+def registrar_atencion(request: HttpRequest):
     """Vista para procesar el registro de una nueva atención"""
-    from .models import Atenciones, Alumnos
+    
     if request.method == "POST":
         try:
             alumno = Alumnos.objects.get(pk=request.POST.get('alumno_id'))
@@ -101,9 +93,9 @@ def registrar_atencion(request):
     return redirect('mostrar_registrar_atencion')
 
 @role_required(["ADMINISTRADOR", "PROFESOR"])
-def mostrar_modificar_atencion(request, hash_id):
+def mostrar_modificar_atencion(request: HttpRequest, hash_id):
     """Vista para mostrar el formulario de modificación de atención"""
-    from .models import Atenciones, Alumnos
+    
     try:
         id_atencion = Atenciones.decode_hash(hash_id)
         atencion = Atenciones.objects.get(id=id_atencion)
@@ -122,9 +114,9 @@ def mostrar_modificar_atencion(request, hash_id):
         return redirect('listar_atenciones')
 
 @role_required(["ADMINISTRADOR", "PROFESOR"])
-def modificar_atencion(request, hash_id):
+def modificar_atencion(request: HttpRequest, hash_id):
     """Vista para procesar la modificación de una atención"""
-    from .models import Atenciones, Alumnos
+    
     
     if request.method == "POST":
         nomUsuario = request.session.get("nomUsuario")
@@ -161,9 +153,9 @@ def modificar_atencion(request, hash_id):
         return redirect('modificar_atencion', hash_id=hash_id)
 
 @role_required(["ADMINISTRADOR", "PROFESOR"])
-def eliminar_atencion(request, hash_id):
+def eliminar_atencion(request: HttpRequest, hash_id):
     """Vista para eliminar una atención"""
-    from .models import Atenciones
+    
     
     nomUsuario = request.session.get("nomUsuario")
     

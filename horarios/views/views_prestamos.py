@@ -1,18 +1,11 @@
-from datetime import datetime, timedelta
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.db import connection
-from django.utils import timezone
-from django.db.models import Count, OuterRef, Subquery, IntegerField
-from django.db.models.functions import Coalesce
-from horarios.models import Profesor, Asignatura, Curso, AsignaturasProfesor, DisponibilidadProfesor, Horario, Usuario, Historial, Alumnos, Padre, Apoderado, Impresiones, Insumos, Prestamos, ConsejosProfesores, CURSOS_CHOICE, ESTADOIMPRESION_CHOICES
-from django.contrib.auth.models import User
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.decorators import login_required
-from horarios.decorators import role_required, profesor_data_only, alumno_data_only, login_or_session_required
+from horarios.models import Usuario, Insumos, Prestamos
+from horarios.decorators import role_required
+from django.http import HttpRequest
 
 @role_required(["ADMINISTRADOR", "DIRECTOR"])
-def listar_prestamos(request):
+def listar_prestamos(request: HttpRequest):
     """Lista todos los préstamos registrados"""
     if 'nomUsuario' not in request.session:
         return redirect('login')
@@ -52,7 +45,7 @@ def listar_prestamos(request):
     return render(request, 'listar_prestamos.html', context)
 
 @role_required(["ADMINISTRADOR", "UTP", "SECRETARIA", "DIRECTOR"])
-def mostrar_registrar_prestamo(request):
+def mostrar_registrar_prestamo(request: HttpRequest):
     """Muestra el formulario para registrar un nuevo préstamo"""
     if 'nomUsuario' not in request.session:
         return redirect('login')
@@ -74,7 +67,7 @@ def mostrar_registrar_prestamo(request):
         return redirect('listar_prestamos')
 
 @role_required(["ADMINISTRADOR", "UTP", "SECRETARIA"])
-def registrar_prestamo(request):
+def registrar_prestamo(request: HttpRequest):
     """Procesa el registro de un nuevo préstamo"""
     if 'nomUsuario' not in request.session:
         return redirect('login')
@@ -155,7 +148,7 @@ def registrar_prestamo(request):
     return redirect('mostrar_registrar_prestamo')
 
 @role_required(["ADMINISTRADOR", "UTP", "SECRETARIA", "DIRECTOR"])
-def mostrar_modificar_prestamo(request, id_prestamo):
+def mostrar_modificar_prestamo(request: HttpRequest, id_prestamo: int):
     """Muestra el formulario para modificar un préstamo existente"""
     if 'nomUsuario' not in request.session:
         return redirect('login')
@@ -181,7 +174,7 @@ def mostrar_modificar_prestamo(request, id_prestamo):
         return redirect('listar_prestamos')
 
 @role_required(["ADMINISTRADOR", "UTP", "SECRETARIA"])
-def modificar_prestamo(request):
+def modificar_prestamo(request: HttpRequest):
     """Procesa la modificación de un préstamo"""
     if 'nomUsuario' not in request.session:
         return redirect('login')
@@ -280,7 +273,7 @@ def modificar_prestamo(request):
     return redirect('listar_prestamos')
 
 @role_required(["ADMINISTRADOR", "UTP"])
-def eliminar_prestamo(request, id_prestamo):
+def eliminar_prestamo(request: HttpRequest, id_prestamo: int):
     """Elimina un préstamo (solo si no se ha devuelto nada)"""
     if 'nomUsuario' not in request.session:
         return redirect('login')

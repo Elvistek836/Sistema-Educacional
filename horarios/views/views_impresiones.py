@@ -1,18 +1,14 @@
 from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.db import connection
 from django.utils import timezone
-from django.db.models import Count, OuterRef, Subquery, IntegerField
-from django.db.models.functions import Coalesce
-from horarios.models import Profesor, Asignatura, Curso, AsignaturasProfesor, DisponibilidadProfesor, Horario, Usuario, Historial, Alumnos, Padre, Apoderado, Impresiones, Insumos, Prestamos, ConsejosProfesores, CURSOS_CHOICE, ESTADOIMPRESION_CHOICES
-from django.contrib.auth.models import User
-from django.contrib.auth import update_session_auth_hash
+from horarios.models import Profesor, Usuario, Impresiones, CURSOS_CHOICE, ESTADOIMPRESION_CHOICES
 from django.contrib.auth.decorators import login_required
-from horarios.decorators import role_required, profesor_data_only, alumno_data_only, login_or_session_required
+from horarios.decorators import role_required, login_or_session_required
+from django.http import HttpRequest
 
 @login_or_session_required
-def listar_impresiones(request):
+def listar_impresiones(request: HttpRequest):
     """Vista para listar todas las impresiones"""
     try:
         nomUsuario = request.session.get('nomUsuario')
@@ -64,7 +60,7 @@ def listar_impresiones(request):
         return redirect('/menu')
 
 @login_or_session_required
-def mostrar_registrar_impresion(request):
+def mostrar_registrar_impresion(request: HttpRequest):
     """Vista para mostrar el formulario de registro de impresiones"""
     try:
         context = {
@@ -82,7 +78,7 @@ def mostrar_registrar_impresion(request):
         return redirect('listar_impresiones')
 
 @login_or_session_required
-def registrar_impresion(request):
+def registrar_impresion(request: HttpRequest):
     """Vista para procesar el registro de una nueva impresión"""
     if request.method == 'POST':
         try:
@@ -164,7 +160,7 @@ def registrar_impresion(request):
     return redirect('mostrar_registrar_impresion')
 
 @login_or_session_required
-def mostrar_modificar_impresion(request, id_impresion):
+def mostrar_modificar_impresion(request: HttpRequest, id_impresion: int):
     """Vista para mostrar el formulario de modificación de impresiones"""
     try:
         impresion = get_object_or_404(Impresiones, idImpresion=id_impresion)
@@ -194,7 +190,7 @@ def mostrar_modificar_impresion(request, id_impresion):
         return redirect('listar_impresiones')
 
 @login_or_session_required
-def modificar_impresion(request, id_impresion):
+def modificar_impresion(request: HttpRequest, id_impresion: int):
     """Vista para procesar la modificación de una impresión"""
     if request.method == 'POST':
         try:
@@ -291,7 +287,7 @@ def modificar_impresion(request, id_impresion):
     return redirect('mostrar_modificar_impresion', id_impresion=id_impresion)
 
 @login_or_session_required
-def eliminar_impresion(request, id_impresion):
+def eliminar_impresion(request: HttpRequest, id_impresion: int):
     """Vista para eliminar una impresión"""
     try:
         impresion = get_object_or_404(Impresiones, idImpresion=id_impresion)

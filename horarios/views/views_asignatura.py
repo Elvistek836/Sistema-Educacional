@@ -1,17 +1,10 @@
-from datetime import datetime, timedelta
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.db import connection
-from django.utils import timezone
-from django.db.models import Count, OuterRef, Subquery, IntegerField
-from django.db.models.functions import Coalesce
-from horarios.models import Profesor, Asignatura, Curso, AsignaturasProfesor, DisponibilidadProfesor, Horario, Usuario, Historial, Alumnos, Padre, Apoderado, Impresiones, Insumos, Prestamos, ConsejosProfesores, CURSOS_CHOICE, ESTADOIMPRESION_CHOICES
-from django.contrib.auth.models import User
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.decorators import login_required
-from horarios.decorators import role_required, profesor_data_only, alumno_data_only, login_or_session_required
+from datetime import datetime
+from django.shortcuts import render
+from django.http import HttpRequest
+from horarios.models import Asignatura, Curso, Horario, Historial
 
-def mostrarRegistrarAsig(request):
+
+def mostrarRegistrarAsig(request: HttpRequest):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -27,7 +20,7 @@ def mostrarRegistrarAsig(request):
         datos={"r2":'Debe Iniciar Sesion!!',"uc":'Cursos y Usuarios cargados correctamente!!'}
         return render(request,'index.html',datos)
 #-------------------------------------------------------------------
-def mostrarModificarAsig(request, hash_id):
+def mostrarModificarAsig(request: HttpRequest, hash_id: str):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -51,7 +44,7 @@ def mostrarModificarAsig(request, hash_id):
         datos={"r2":'Debe Iniciar Sesion!!',"uc":'Cursos y Usuarios cargados correctamente!!'}
         return render(request,'index.html',datos)
 #-------------------------------------------------------------------
-def registrarAsignatura(request):
+def registrarAsignatura(request: HttpRequest):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -278,7 +271,7 @@ def registrarAsignatura(request):
         datos={"r2":'Debe Iniciar Sesion!!',"uc":'Cursos y Usuarios cargados correctamente!!'}
         return render(request,'index.html',datos)
 #-----------------------------------------------------------------------------------
-def eliminarAsignatura(request,hash_id):
+def eliminarAsignatura(request: HttpRequest, hash_id: str):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -322,7 +315,7 @@ def eliminarAsignatura(request,hash_id):
         datos={"r2":'Debe Iniciar Sesion!!',"uc":'Cursos y Usuarios cargados correctamente!!'}
         return render(request,'index.html',datos)
 #-----------------------------------------------------------------------------------
-def modificarAsignatura(request,hash_id):
+def modificarAsignatura(request: HttpRequest, hash_id: str):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:

@@ -1,17 +1,13 @@
-from datetime import datetime, timedelta
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
+from datetime import datetime
+from django.shortcuts import render
 from django.db import connection
-from django.utils import timezone
 from django.db.models import Count, OuterRef, Subquery, IntegerField
 from django.db.models.functions import Coalesce
-from horarios.models import Profesor, Asignatura, Curso, AsignaturasProfesor, DisponibilidadProfesor, Horario, Usuario, Historial, Alumnos, Padre, Apoderado, Impresiones, Insumos, Prestamos, ConsejosProfesores, CURSOS_CHOICE, ESTADOIMPRESION_CHOICES
-from django.contrib.auth.models import User
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.decorators import login_required
-from horarios.decorators import role_required, profesor_data_only, alumno_data_only, login_or_session_required
+from horarios.models import Profesor, Asignatura, Curso, AsignaturasProfesor, DisponibilidadProfesor, Horario, Historial, Alumnos
+from django.http import HttpRequest
+from horarios.decorators import role_required, profesor_data_only
 
-def buscarProfesor(request):
+def buscarProfesor(request: HttpRequest):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -89,7 +85,7 @@ def buscarProfesor(request):
 #-------------------------------------------------------------------------
 @role_required(['DIRECTOR', 'PROFESOR', 'ADMINISTRADOR'])
 @profesor_data_only
-def mostrarHorarioProfesor(request):
+def mostrarHorarioProfesor(request: HttpRequest):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -170,7 +166,7 @@ def mostrarHorarioProfesor(request):
         return render(request,'index.html',datos)
 
 @role_required(['DIRECTOR', 'PROFESOR', 'ADMINISTRADOR', 'ESTUDIANTE', 'ALUMNO'])
-def mostrarVisualizarHorario(request):
+def mostrarVisualizarHorario(request: HttpRequest):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -200,7 +196,7 @@ def mostrarVisualizarHorario(request):
         datos={"r2":'Debe Iniciar Sesion!!',"uc":'Cursos y Usuarios cargados correctamente!!'}
         return render(request,'index.html',datos)
 #--------------------------------------------------------------------------------
-def buscarCurso(request):
+def buscarCurso(request: HttpRequest):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -269,7 +265,7 @@ def buscarCurso(request):
         datos={"r2":'Debe Iniciar Sesion!!',"uc":'Cursos y Usuarios cargados correctamente!!'}
         return render(request,'index.html',datos)
 
-def mostrarRegistrarHor(request):
+def mostrarRegistrarHor(request: HttpRequest):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -288,7 +284,7 @@ def mostrarRegistrarHor(request):
         datos={"r2":'Debe Iniciar Sesion!!',"uc":'Cursos y Usuarios cargados correctamente!!'}
         return render(request,'index.html',datos)
 #---------------------------------------------------------------------------------------
-def mostrarHorario(request,hash_id):
+def mostrarHorario(request: HttpRequest, hash_id: str):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -342,7 +338,7 @@ def mostrarHorario(request,hash_id):
         return render(request,'index.html',datos)
 #---------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------
-def cambiarHorario(request,id, idc):
+def cambiarHorario(request: HttpRequest, id: int, idc: int):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:

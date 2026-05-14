@@ -1,18 +1,12 @@
-from datetime import datetime, timedelta
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.db import connection
-from django.utils import timezone
-from django.db.models import Count, OuterRef, Subquery, IntegerField
-from django.db.models.functions import Coalesce
-from horarios.models import Profesor, Asignatura, Curso, AsignaturasProfesor, DisponibilidadProfesor, Horario, Usuario, Historial, Alumnos, Padre, Apoderado, Impresiones, Insumos, Prestamos, ConsejosProfesores, CURSOS_CHOICE, ESTADOIMPRESION_CHOICES
+from django.http import HttpRequest
+from horarios.models import ConsejosProfesores
 from django.contrib.auth.models import User
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.decorators import login_required
-from horarios.decorators import role_required, profesor_data_only, alumno_data_only, login_or_session_required
+from horarios.decorators import role_required
 
 @role_required(["ADMINISTRADOR", "DIRECTOR"])
-def listar_consejos(request):
+def listar_consejos(request: HttpRequest):
     """Vista para listar todos los consejos de profesores"""
     if 'nomUsuario' not in request.session:
         return redirect('login')
@@ -40,7 +34,7 @@ def listar_consejos(request):
     return render(request, 'listar_consejos.html', context)
 
 @role_required(["ADMINISTRADOR"])
-def mostrar_registrar_consejo(request):
+def mostrar_registrar_consejo(request: HttpRequest):
     """Vista para mostrar el formulario de registro de consejo"""
     if 'nomUsuario' not in request.session:
         return redirect('login')
@@ -54,7 +48,7 @@ def mostrar_registrar_consejo(request):
     return render(request, 'registrar_consejo.html', context)
 
 @role_required(["ADMINISTRADOR"])
-def registrar_consejo(request):
+def registrar_consejo(request: HttpRequest):
     """Vista para procesar el registro de un nuevo consejo"""
     if 'nomUsuario' not in request.session:
         return redirect('login')
@@ -129,7 +123,7 @@ def registrar_consejo(request):
     return redirect('mostrar_registrar_consejo')
 
 @role_required(["ADMINISTRADOR"])
-def mostrar_modificar_consejo(request, id_consejo):
+def mostrar_modificar_consejo(request: HttpRequest, id_consejo: int):
     """Vista para mostrar el formulario de modificación de consejo"""
     if 'nomUsuario' not in request.session:
         return redirect('login')
@@ -153,7 +147,7 @@ def mostrar_modificar_consejo(request, id_consejo):
         return redirect('listar_consejos')
 
 @role_required(["ADMINISTRADOR"])
-def modificar_consejo(request, id_consejo):
+def modificar_consejo(request: HttpRequest, id_consejo: int):
     """Vista para procesar la modificación de un consejo"""
     if 'nomUsuario' not in request.session:
         return redirect('login')
@@ -221,7 +215,7 @@ def modificar_consejo(request, id_consejo):
     return redirect('listar_consejos')
 
 @role_required(["ADMINISTRADOR"])
-def eliminar_consejo(request, id_consejo):
+def eliminar_consejo(request: HttpRequest, id_consejo: int):
     """Vista para eliminar un consejo de profesores"""
     if 'nomUsuario' not in request.session:
         return redirect('login')

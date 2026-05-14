@@ -1,17 +1,10 @@
-from datetime import datetime, timedelta
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.db import connection
-from django.utils import timezone
-from django.db.models import Count, OuterRef, Subquery, IntegerField
-from django.db.models.functions import Coalesce
-from horarios.models import Profesor, Asignatura, Curso, AsignaturasProfesor, DisponibilidadProfesor, Horario, Usuario, Historial, Alumnos, Padre, Apoderado, Impresiones, Insumos, Prestamos, ConsejosProfesores, CURSOS_CHOICE, ESTADOIMPRESION_CHOICES
-from django.contrib.auth.models import User
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.decorators import login_required
-from horarios.decorators import role_required, profesor_data_only, alumno_data_only, login_or_session_required
+from datetime import datetime
+from django.shortcuts import render
+from django.http import HttpRequest
+from horarios.models import Profesor, Asignatura,AsignaturasProfesor,Horario,Historial
 
-def mostrarRegistrarEsp(request,hash_id):
+
+def mostrarRegistrarEsp(request: HttpRequest, hash_id: str):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -29,7 +22,7 @@ def mostrarRegistrarEsp(request,hash_id):
         datos={"r2":'Debe Iniciar Sesion!!',"uc":'Cursos y Usuarios cargados correctamente!!'}
         return render(request,'index.html',datos)
 #-------------------------------------------------------------------------------------------
-def registrarEspecialidad(request,hash_id):
+def registrarEspecialidad(request: HttpRequest, hash_id: str):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -73,7 +66,7 @@ def registrarEspecialidad(request,hash_id):
         datos={"r2":'Debe Iniciar Sesion!!',"uc":'Cursos y Usuarios cargados correctamente!!'}
         return render(request,'index.html',datos)
 #-----------------------------------------------------------------------------
-def eliminarEspecialidad(request,id,id2):
+def eliminarEspecialidad(request: HttpRequest, id: int, id2: int):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:

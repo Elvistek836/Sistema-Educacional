@@ -1,17 +1,12 @@
-from datetime import datetime, timedelta
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.db import connection
-from django.utils import timezone
-from django.db.models import Count, OuterRef, Subquery, IntegerField
-from django.db.models.functions import Coalesce
-from horarios.models import Profesor, Asignatura, Curso, AsignaturasProfesor, DisponibilidadProfesor, Horario, Usuario, Historial, Alumnos, Padre, Apoderado, Impresiones, Insumos, Prestamos, ConsejosProfesores, CURSOS_CHOICE, ESTADOIMPRESION_CHOICES
-from horarios.decorators import role_required, profesor_data_only, alumno_data_only, login_or_session_required
+from datetime import datetime
+from django.shortcuts import render
+from horarios.models import Profesor, Horario, Usuario, Historial
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.http import HttpRequest
 
 
-def mostrarRegistrarPro(request):
+def mostrarRegistrarPro(request: HttpRequest):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -26,7 +21,7 @@ def mostrarRegistrarPro(request):
         datos={"r2":'Debe Iniciar Sesion!!',"uc":'Cursos y Usuarios cargados correctamente!!'}
         return render(request,'index.html',datos)
 #-------------------------------------------------------------------------
-def mostrarModificarPro(request,hash_id):
+def mostrarModificarPro(request: HttpRequest, hash_id: str):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -48,7 +43,7 @@ def mostrarModificarPro(request,hash_id):
         datos={"r2":'Debe Iniciar Sesion!!',"uc":'Cursos y Usuarios cargados correctamente!!'}
         return render(request,'index.html',datos)
 #---------------------------------------------------------------------------
-def registrarProfesor(request):
+def registrarProfesor(request: HttpRequest):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -116,7 +111,7 @@ def registrarProfesor(request):
         datos={"r2":'Debe Iniciar Sesion!!',"uc":'Cursos y Usuarios cargados correctamente!!'}
         return render(request,'index.html',datos)
 #-------------------------------------------------------------------------------
-def modificarProfesor(request,hash_id):
+def modificarProfesor(request: HttpRequest, hash_id: str):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:
@@ -221,7 +216,7 @@ def modificarProfesor(request,hash_id):
         datos={"r2":'Debe Iniciar Sesion!!',"uc":'Cursos y Usuarios cargados correctamente!!'}
         return render(request,'index.html',datos)
 #---------------------------------------------------------------------------
-def eliminarProfesor(request,hash_id):
+def eliminarProfesor(request: HttpRequest, hash_id: str):
     nomUsuario=request.session.get("nomUsuario")
     cargoUsuario=request.session.get("cargoUsuario")
     if nomUsuario:

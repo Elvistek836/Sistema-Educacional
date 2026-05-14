@@ -3,7 +3,6 @@ from django.contrib import messages
 from horarios.models import Profesor, Actividades, Usuario
 from django.http import HttpRequest
 from horarios.decorators import role_required
-from django.contrib.auth.models import User
 
 @role_required(allowed_roles=['DIRECTOR', 'PROFESOR', 'ESTUDIANTE', 'ADMINISTRADOR'])
 def listar_actividades(request: HttpRequest):

@@ -1,18 +1,12 @@
-from datetime import datetime, timedelta
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.db import connection
-from django.utils import timezone
-from django.db.models import Count, OuterRef, Subquery, IntegerField
-from django.db.models.functions import Coalesce
-from horarios.models import Profesor, Asignatura, Curso, AsignaturasProfesor, DisponibilidadProfesor, Horario, Usuario, Historial, Alumnos, Padre, Apoderado, Impresiones, Insumos, Prestamos, ConsejosProfesores, CURSOS_CHOICE, ESTADOIMPRESION_CHOICES
-from django.contrib.auth.models import User
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.decorators import login_required
-from horarios.decorators import role_required, profesor_data_only, alumno_data_only, login_or_session_required
+from horarios.models import Insumos
+from horarios.decorators import role_required
+from django.http import HttpRequest
+
 
 @role_required(["ADMINISTRADOR","DIRECTOR"])
-def listar_insumos(request):
+def listar_insumos(request: HttpRequest):
     """Vista para listar todos los insumos"""
     
     nomUsuario = request.session.get("nomUsuario")
@@ -35,7 +29,7 @@ def listar_insumos(request):
         return render(request, 'index.html', datos)
 
 @role_required(["ADMINISTRADOR"])
-def mostrar_registrar_insumo(request):
+def mostrar_registrar_insumo(request: HttpRequest):
     """Vista para mostrar el formulario de registro de insumos"""
     nomUsuario = request.session.get("nomUsuario")
     cargoUsuario = request.session.get("cargoUsuario")
@@ -54,7 +48,7 @@ def mostrar_registrar_insumo(request):
         return render(request, 'index.html', datos)
 
 @role_required(["ADMINISTRADOR"])
-def registrar_insumo(request):
+def registrar_insumo(request: HttpRequest):
     """Vista para procesar el registro de un nuevo insumo"""
     
     if request.method == "POST":
@@ -98,7 +92,7 @@ def registrar_insumo(request):
         return redirect('mostrar_registrar_insumo')
 
 @role_required(["ADMINISTRADOR"])
-def mostrar_modificar_insumo(request, id_insumo):
+def mostrar_modificar_insumo(request: HttpRequest, id_insumo: int):
     """Vista para mostrar el formulario de modificación de insumo"""
     
     nomUsuario = request.session.get("nomUsuario")
@@ -126,7 +120,7 @@ def mostrar_modificar_insumo(request, id_insumo):
         return render(request, 'index.html', datos)
 
 @role_required(["ADMINISTRADOR"])
-def modificar_insumo(request):
+def modificar_insumo(request: HttpRequest):
     """Vista para procesar la modificación de un insumo"""
     
     if request.method == "POST":
@@ -173,7 +167,7 @@ def modificar_insumo(request):
         return redirect('listar_insumos')
 
 @role_required(["ADMINISTRADOR"])
-def eliminar_insumo(request, id_insumo):
+def eliminar_insumo(request: HttpRequest, id_insumo: int):
     """Vista para eliminar un insumo"""
     
     nomUsuario = request.session.get("nomUsuario")

@@ -402,7 +402,7 @@ def listar_alumnos(request: HttpRequest):
         datos = {"r2": 'Debe Iniciar Sesion!!', "uc": 'Cursos y Usuarios cargados correctamente!!'}
         return render(request, 'index.html', datos)
 
-def exportar_alumnos_excel(request: HttpRequest):
+def exportar_alumnos_excel(request):
     """Exportar lista de alumnos a Excel"""
     from django.http import HttpResponse
     import openpyxl

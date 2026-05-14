@@ -1,27 +1,18 @@
-from datetime import datetime, timedelta
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.db import connection
-from django.utils import timezone
-from django.db.models import Count, OuterRef, Subquery, IntegerField
-from django.db.models.functions import Coalesce
-from horarios.models import Profesor, Asignatura, Curso, AsignaturasProfesor, DisponibilidadProfesor, Horario, Usuario, Historial, Alumnos, Padre, Apoderado, Impresiones, Insumos, Prestamos, ConsejosProfesores, CURSOS_CHOICE, ESTADOIMPRESION_CHOICES
-from django.contrib.auth.models import User
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.decorators import login_required
-from horarios.decorators import role_required, profesor_data_only, alumno_data_only, login_or_session_required
+from django.shortcuts import render, redirect
+from django.http import HttpRequest
+from horarios.models import Certificados, Alumnos, Usuario
+from horarios.decorators import role_required
 
 @role_required(["ADMINISTRADOR"])
-def generar_certificados_pdf(request):
+def generar_certificados_pdf(request: HttpRequest):
     import io
     import os
     from django.http import FileResponse
     from reportlab.lib.pagesizes import letter
     from reportlab.pdfgen import canvas
     from zipfile import ZipFile
-    from .models import Certificados
     try:
-        from PyPDF2 import PdfReader, PdfWriter
+        from PyPDF2 import PdfReader, PdfWriter  # pyright: ignore[reportMissingImports]
     except Exception:
         PdfReader = None
         PdfWriter = None
@@ -93,9 +84,8 @@ def generar_certificados_pdf(request):
 
 
 @role_required(["ADMINISTRADOR", "DIRECTOR"])
-def listar_certificados(request):
+def listar_certificados(request: HttpRequest):
     """Vista para listar certificados con opción de generar PDF"""
-    from .models import Certificados
     
     nomUsuario = request.session.get("nomUsuario")
     cargoUsuario = request.session.get("cargoUsuario")
@@ -116,9 +106,8 @@ def listar_certificados(request):
         datos = {"r2": 'Debe Iniciar Sesion!!', "uc": 'Cursos y Usuarios cargados correctamente!!'}
         return render(request, 'index.html', datos)
 
-def mostrar_registrar_certificado(request):
+def mostrar_registrar_certificado(request: HttpRequest):
     """Mostrar formulario para registrar certificado"""
-    from .models import Alumnos
     nomUsuario = request.session.get("nomUsuario")
     cargoUsuario = request.session.get("cargoUsuario")
     if nomUsuario:
@@ -135,10 +124,9 @@ def mostrar_registrar_certificado(request):
         datos = {"r2": 'Debe Iniciar Sesion!!', "uc": 'Cursos y Usuarios cargados correctamente!!'}
         return render(request, 'index.html', datos)
 
-def registrar_certificado(request):
+def registrar_certificado(request: HttpRequest):
     """Procesar registro de certificado"""
     from django.contrib import messages
-    from .models import Certificados, Alumnos, Usuario
     if request.method == "POST":
         nomUsuario = request.session.get("nomUsuario")
         if nomUsuario:
